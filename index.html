@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Crust & Crumb">
+<title>Crust & Crumb UIO — Guía de Autor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F9F8F6;
+    --bg-alt: #FFFFFF;
+    --ink: #1C1917;
+    --ink-light: #57534E;
+    --border: #1C1917;
+    --border-light: #D6D3D1;
+    --accent: #8C6239; /* Editorial Caramel/Brown */
+    --accent-light: #E7E0D8;
+    --alert: #991B1B;
+    --alert-bg: #FEF2F2;
+    --success: #166534;
+    --success-bg: #F0FDF4;
+    
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Manrope", -apple-system, sans-serif;
+    --mono: "JetBrains Mono", monospace;
+    
+    --radius: 4px; /* Sharp, editorial corners */
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { background: var(--bg); scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--ink); font-family: var(--sans); font-size: 14px;
+    background: var(--bg);
+    min-height: 100vh;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; margin: 0; color: var(--ink); }
+  b, strong { font-weight: 700; }
+  
+  svg.i { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+  /* Navigation & Header */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: calc(12px + env(safe-area-inset-top)) 20px 12px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .brand { font-family: var(--serif); font-size: 22px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.02em; }
+  .brand em { font-style: italic; color: var(--accent); }
+  
+  .desktop-nav { display: none; gap: 24px; }
+  .nav-link { font-family: var(--sans); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-light); cursor: pointer; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .nav-link:hover, .nav-link.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .status-pill {
+    font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+    padding: 4px 10px; border: 1px solid var(--border); background: var(--bg-alt);
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  }
+
+  .mobile-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+    background: var(--bg); border-top: 1px solid var(--border);
+    display: flex; padding-bottom: env(safe-area-inset-bottom);
+  }
+  .mob-tab {
+    flex: 1; padding: 14px 0; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--ink-light); background: none; border: none; border-right: 1px solid var(--border); cursor: pointer;
+  }
+  .mob-tab:last-child { border-right: none; }
+  .mob-tab.active { background: var(--ink); color: var(--bg); }
+
+  @media (min-width: 768px) {
+    .mobile-nav { display: none; }
+    .desktop-nav { display: flex; align-items: center; }
+    body { padding-bottom: 40px; }
+  }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; display: none; }
+  .container.active { display: block; animation: fadeIn 0.4s var(--ease); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Buttons & Inputs */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 14px 20px; font-family: var(--sans); font-weight: 700; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer;
+    background: var(--ink); color: var(--bg); border: 1px solid var(--ink);
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn:hover { background: var(--bg); color: var(--ink); }
+  .btn.outline { background: transparent; color: var(--ink); }
+  .btn.outline:hover { background: var(--accent-light); }
+
+  input[type="text"], input[type="date"], select, textarea {
+    width: 100%; background: var(--bg-alt); border: 1px solid var(--border);
+    color: var(--ink); padding: 12px 14px; font-family: var(--sans); font-size: 14px;
+    border-radius: 0; outline: none; appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); background: var(--bg); }
+  textarea { resize: vertical; min-height: 80px; }
+  
+  /* Range Sliders */
+  .range-wrap { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .range-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .range-val { font-family: var(--mono); color: var(--accent); font-size: 14px; }
+  input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 4px 0; }
+  input[type=range]:focus { outline: none; }
+  input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; cursor: pointer; background: var(--border-light); }
+  input[type=range]::-webkit-slider-thumb { height: 16px; width: 16px; border-radius: 50%; background: var(--ink); cursor: pointer; -webkit-appearance: none; margin-top: -7px; border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--ink); transition: transform 0.1s; }
+  input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); background: var(--accent); }
+
+  /* Accordions */
+  details { border: 1px solid var(--border); background: var(--bg-alt); margin-bottom: -1px; }
+  summary {
+    padding: 16px; font-family: var(--serif); font-size: 18px; font-weight: 600; 
+    cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg-alt); transition: background 0.2s;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { background: var(--accent-light); }
+  details[open] summary { border-bottom: 1px solid var(--border); background: var(--accent-light); }
+  .details-content { padding: 16px; background: var(--bg); }
+
+  /* Start Page (Editorial Hero) */
+  .hero-split { display: grid; grid-template-columns: 1fr; gap: 24px; border: 1px solid var(--border); background: var(--bg-alt); padding: 24px; margin-bottom: 32px; }
+  @media (min-width: 640px) { .hero-split { grid-template-columns: 1fr 1fr; padding: 40px; } }
+  .hero-title { font-family: var(--serif); font-size: clamp(32px, 6vw, 48px); line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; }
+  .hero-title em { font-style: italic; color: var(--accent); display: block; margin-top: 8px; }
+  .hero-text { font-size: 14px; line-height: 1.6; color: var(--ink-light); margin-bottom: 24px; }
+  
+  .manifesto-block { border-top: 1px solid var(--border); padding-top: 24px; margin-top: 32px; }
+  .manifesto-title { font-size: 20px; margin-bottom: 12px; }
+  .manifesto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .photo-frame { border: 1px solid var(--border); padding: 4px; background: var(--bg-alt); }
+  .photo-frame img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: contrast(1.05) saturate(0.9); }
+  .photo-cap { font-family: var(--mono); font-size: 10px; text-transform: uppercase; text-align: center; padding: 8px 4px 4px; color: var(--ink-light); }
+
+  /* Bakery List & Cards */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; }
+  .filter-btn { padding: 8px 16px; font-family: var(--sans); font-size: 11px; font-weight: 700; text-transform: uppercase; border: 1px solid var(--border); background: var(--bg-alt); color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .filter-btn.active { background: var(--ink); color: var(--bg); }
+
+  .bakery-row { border: 1px solid var(--border); background: var(--bg-alt); margin-bottom: 12px; transition: transform 0.2s; }
+  .bakery-header { padding: 16px; display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center; cursor: pointer; }
+  .bakery-header:hover { background: var(--accent-light); }
+  .b-num { font-family: var(--serif); font-size: 24px; font-style: italic; color: var(--accent); }
+  .b-name { font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: 0.02em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .b-zone { font-family: var(--mono); font-size: 10px; font-weight: 400; padding: 2px 6px; border: 1px solid var(--border-light); background: var(--bg); }
+  .b-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-light); margin-top: 4px; display: flex; gap: 12px; }
+  .b-status { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--border); }
+  .status-done { background: var(--success-bg); color: var(--success); border-color: var(--success); }
+  .status-partial { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+  
+  .bakery-body { display: none; padding: 0 16px 24px; border-top: 1px solid var(--border); background: var(--bg-alt); }
+  .bakery-row.open .bakery-body { display: block; }
+
+  /* Score Grid & Chips */
+  .chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .chip { padding: 6px 12px; border: 1px solid var(--border); background: var(--bg); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .chip.selected { background: var(--ink); color: var(--bg); }
+
+  .photo-upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .photo-box { border: 1px dashed var(--border); aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; position: relative; background: var(--bg); cursor: pointer; color: var(--ink-light); }
+  .photo-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1; }
+  .photo-box input { display: none; }
+  .photo-del { position: absolute; top: 4px; right: 4px; z-index: 2; background: var(--alert); color: #fff; border: none; width: 24px; height: 24px; font-weight: bold; cursor: pointer; }
+
+  .switch-row { display: flex; align-items: center; justify-content: space-between; padding: 12px; border: 1px solid var(--border); background: var(--bg); margin-bottom: 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .switch-row.danger { border-color: var(--alert); background: var(--alert-bg); color: var(--alert); }
+  .switch-row input[type="checkbox"] { accent-color: var(--ink); width: 18px; height: 18px; }
+
+  /* Ranking & Analytics */
+  .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+  @media (min-width: 640px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
+  .kpi-box { border: 1px solid var(--border); background: var(--bg-alt); padding: 16px; text-align: center; }
+  .kpi-val { font-family: var(--mono); font-size: 24px; font-weight: 700; margin: 8px 0 4px; }
+  .kpi-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--ink-light); letter-spacing: 0.05em; }
+
+  .podium-list { margin-top: 24px; }
+  .rank-row { display: grid; grid-template-columns: 40px 1fr auto; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--border); margin-bottom: -1px; background: var(--bg-alt); }
+  .rank-row:nth-child(1) { background: var(--accent-light); border-color: var(--accent); z-index: 2; position: relative; }
+  .rank-pos { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--accent); }
+  .rank-score { font-family: var(--mono); font-size: 18px; font-weight: 700; }
+
+  .empty-state { text-align: center; padding: 60px 20px; border: 1px dashed var(--border); background: var(--bg-alt); margin-top: 24px; }
+  .empty-state h3 { font-family: var(--serif); font-size: 24px; margin-bottom: 8px; }
+  .empty-state p { color: var(--ink-light); margin-bottom: 24px; }
+
+  /* Veredicto Overlay */
+  .overlay { position: fixed; inset: 0; background: rgba(249, 248, 246, 0.95); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal { background: var(--bg-alt); border: 1px solid var(--border); padding: 32px 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 12px 12px 0 var(--border-light); }
+  
+  .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 24px; font-size: 12px; font-weight: 700; text-transform: uppercase; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200; border: 1px solid var(--border); }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+</svg>
+
+<header>
+  <div class="brand">CRUST &amp; CRUMB <em>UIO</em></div>
+  <nav class="desktop-nav">
+    <a class="nav-link active" onclick="switchTab('home')">Inicio</a>
+    <a class="nav-link" onclick="switchTab('eval')">Evaluar</a>
+    <a class="nav-link" onclick="switchTab('rank')">Ranking</a>
+    <a class="nav-link" onclick="switchTab('rules')">Respaldo</a>
+  </nav>
+  <button class="status-pill" onclick="switchTab('rules')"><span id="save-status">INDEXEDDB SYNC</span></button>
+</header>
+
+<nav class="mobile-nav">
+  <button class="mob-tab active" data-tab="home" onclick="switchTab('home')">Inicio</button>
+  <button class="mob-tab" data-tab="eval" onclick="switchTab('eval')">Evaluar</button>
+  <button class="mob-tab" data-tab="rank" onclick="switchTab('rank')">Ranking</button>
+  <button class="mob-tab" data-tab="rules" onclick="switchTab('rules')">Data</button>
+</nav>
+
+<main id="tab-home" class="container active">
+  <section class="hero-split">
+    <div class="hero-left">
+      <div class="status-pill" style="margin-bottom:16px;">VIGENCIA: 09 NOV</div>
+      <h2 class="hero-title">EL ESTÁNDAR DEL <em>CROISSANT PERFECTO</em></h2>
+    </div>
+    <div class="hero-right">
+      <p class="hero-text">El croissant representa la cúspide de la panadería artesanal: una delicada sinfonía de mantequilla, fermentación precisa y un laminado técnico impecable. Este sistema documenta y corona con rigor al mejor de Quito y sus valles.</p>
+      <button class="btn" onclick="switchTab('eval')">Iniciar Ruta de Evaluación →</button>
+    </div>
+  </section>
+
+  <h3 style="font-size: 24px; margin-bottom: 8px;">Guía Visual de Referencia</h3>
+  <p style="color:var(--ink-light); margin-bottom: 24px;">Parámetros estéticos e internos de calibración técnica.</p>
+
+  <div class="manifesto-block">
+    <h4 class="manifesto-title">1. Classic Croissant (Tradición Francesa)</h4>
+    <p style="color:var(--ink-light); line-height: 1.6; text-align: justify;">
+      La prueba definitiva de un maestro panadero. Un classic croissant perfecto debe ser ligero como el aire y crujiente al extremo. Su corteza debe lucir vueltas simétricas bien definidas con un tono dorado uniforme. Al morderlo, debe romperse en mil pedazos, liberando un aroma profundo a mantequilla. Por dentro, su estructura debe revelar un panal de abejas perfecto (alveolado abierto y translúcido).
+    </p>
+    <div class="manifesto-grid">
+      <div class="photo-frame">
+        <img src="assets/puro-exterior.png" alt="Exterior Dorado">
+        <div class="photo-cap">Foto 1: Exterior Dorado</div>
+      </div>
+      <div class="photo-frame">
+        <img src="assets/puro-interior.png" alt="Alveolado Abierto">
+        <div class="photo-cap">Foto 2: Alveolado Abierto</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manifesto-block">
+    <h4 class="manifesto-title">2. Croissant Relleno Dulce</h4>
+    <p style="color:var(--ink-light); line-height: 1.6; text-align: justify;">
+      La armonía perfecta entre pastelería fina y panificación técnica. Un croissant relleno excepcional jamás debe sacrificar la crocancia del hojaldre base. El relleno debe elaborarse con insumos de alta gama y su cantidad debe ser precisa para acompañar cada bocado de manera uniforme desde el centro hasta las puntas.
+    </p>
+    <div class="manifesto-grid">
+      <div class="photo-frame">
+        <img src="assets/relleno-exterior.png" alt="Textura Exterior">
+        <div class="photo-cap">Foto 1: Textura Exterior</div>
+      </div>
+      <div class="photo-frame">
+        <img src="assets/relleno-interior.png" alt="Equilibrio de Crema">
+        <div class="photo-cap">Foto 2: Equilibrio de Crema</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<main id="tab-eval" class="container">
+  <div style="margin-bottom: 16px;">
+    <input type="text" id="search" placeholder="Buscar panadería o sector..." oninput="renderList()">
+  </div>
+  
+  <div class="filter-bar" id="filter-sector">
+    <button class="filter-btn active" data-sec="all" onclick="setSector(this)">Todos</button>
+    <button class="filter-btn" data-sec="Norte / Centro" onclick="setSector(this)">Norte/Centro</button>
+    <button class="filter-btn" data-sec="Cumbayá / Tumbaco" onclick="setSector(this)">Valles</button>
+    <button class="filter-btn" data-sec="Valle de los Chillos" onclick="setSector(this)">Chillos</button>
+  </div>
+
+  <div id="bakery-list"></div>
+</main>
+
+<main id="tab-rank" class="container">
+  <div class="kpi-grid" id="rank-kpis"></div>
+  
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px solid var(--border); padding-bottom:12px; margin-bottom: 16px;">
+    <h2 style="font-size:24px;">Clasificación Oficial</h2>
+    <div class="filter-bar" id="rank-category" style="margin:0; padding:0;">
+      <button class="filter-btn active" data-v="total" onclick="setRankMode(this)">General</button>
+      <button class="filter-btn" data-v="c1" onclick="setRankMode(this)">Classic</button>
+      <button class="filter-btn" data-v="c2" onclick="setRankMode(this)">Relleno</button>
+      <button class="filter-btn" data-v="c3" onclick="setRankMode(this)">Novelty</button>
+    </div>
+  </div>
+  
+  <div id="ranking-list"></div>
+</main>
+
+<main id="tab-rules" class="container">
+  <section class="hero-split">
+    <div class="hero-left">
+      <h2 class="hero-title" style="font-size: 32px;">MEMORIA LOCAL <em>INDEXEDDB</em></h2>
+    </div>
+    <div class="hero-right">
+      <p class="hero-text">Todas tus calificaciones y fotografías se almacenan de forma segura en la base de datos interna de tu dispositivo (Zero-Backend).</p>
+      <button class="btn" style="margin-bottom: 12px;" onclick="exportBackup()">Descargar Respaldo JSON</button>
+      <label class="btn outline">Restaurar Archivo
+        <input type="file" accept=".json,application/json" style="display:none;" onchange="importBackup(event)">
+      </label>
+    </div>
+  </section>
+</main>
+
+<div class="overlay" id="veredicto-overlay" onclick="closeVeredicto()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div id="veredicto-icon" style="font-size: 48px; margin-bottom: 16px;"></div>
+    <h3 id="veredicto-title" style="font-size: 28px; margin-bottom: 8px;"></h3>
+    <div id="veredicto-score" style="font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 24px;"></div>
+    <button class="btn" id="btn-share-story" style="margin-bottom: 12px;">Generar Story</button>
+    <button class="btn outline" onclick="closeVeredicto()">Cerrar</button>
+  </div>
+</div>
+
+<canvas id="story-canvas" width="1080" height="1920" style="display:none;"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+const BAKERIES = [
+  { name: "Panificadora Ambato", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "L'Artisan", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "Fankor", zone: "Orellana", sector: "Norte / Centro" },
+  { name: "Europa Cafe", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Hansel y Gretel", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Sweet and Coffee", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Cyrano", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Panasutra", zone: "La Pradera", sector: "Norte / Centro" },
+  { name: "Le Pan de Jerome", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "Pía Pastelería", zone: "La Pradera", sector: "Norte / Centro" },
+  { name: "Panecu", zone: "La Floresta", sector: "Norte / Centro" },
+  { name: "Bakery Alameda", zone: "La Mariscal", sector: "Norte / Centro" },
+  { name: "El Pan de Martín", zone: "La Vicentina", sector: "Norte / Centro" },
+  { name: "Bole", zone: "La Carolina", sector: "Norte / Centro" },
+  { name: "Chatelain", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "227 Resto-Café", zone: "La Carolina", sector: "Norte / Centro" },
+  { name: "Cyril", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "Uko Bread", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "Lecroissant", zone: "6 de Diciembre", sector: "Norte / Centro" },
+  { name: "Croissant Lovers", zone: "Iñaquito", sector: "Norte / Centro" },
+  { name: "Miam Miam", zone: "El Batán", sector: "Norte / Centro" },
+  { name: "Koke", zone: "Jipijapa", sector: "Norte / Centro" },
+  { name: "Panpe", zone: "Río Coca", sector: "Norte / Centro" },
+  { name: "Akao", zone: "El Bosque", sector: "Norte / Centro" },
+  { name: "Auqui Panera", zone: "Guayasamín", sector: "Cumbayá / Tumbaco" },
+  { name: "Corteza (UDLA)", zone: "Nayón", sector: "Cumbayá / Tumbaco" },
+  { name: "Oh Caffe", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "Il Pasticcino", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "Ambrosia (USFQ)", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "La Bakery (UIDE)", zone: "Simón Bolívar", sector: "Valle de los Chillos" },
+  { name: "Bruning Deli", zone: "Conocoto", sector: "Valle de los Chillos" },
+  { name: "Aroma", zone: "Conocoto", sector: "Valle de los Chillos" },
+  { name: "Atelier Sucre", zone: "La Armenia", sector: "Valle de los Chillos" },
+  { name: "La Panetteria", zone: "Valle de los Chillos", sector: "Valle de los Chillos" },
+  { name: "Chuta Madre", zone: "Centro", sector: "Norte / Centro" },
+  { name: "La Juana", zone: "Sur", sector: "Norte / Centro" }
+];
+
+const FLAVOR_CHIPS = ["Chocolate", "Pistacho", "Almendras", "Frutos Rojos", "Lemon Cheesecake", "Mora", "Otro..."];
+const CATS = ["c1", "c2", "c3"];
+
+let dbData = {};
+let openCardId = null;
+let filterSector = "all";
+let rankMode = "total";
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const fmt = n => Number.isInteger(n) ? n : n.toFixed(1);
+const haptic = () => { if(navigator.vibrate) navigator.vibrate(50); };
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+const dbPromise = new Promise((resolve, reject) => {
+  const req = indexedDB.open("CrustCrumbUIO_DB_v2", 1);
+  req.onupgradeneeded = e => e.target.result.createObjectStore("store");
+  req.onsuccess = e => resolve(e.target.result);
+  req.onerror = e => reject(e);
+});
+
+async function loadLocal() {
+  const db = await dbPromise;
+  return new Promise(res => {
+    const req = db.transaction("store", "readonly").objectStore("store").get("data");
+    req.onsuccess = () => res(req.result || {});
+    req.onerror = () => res({});
+  });
+}
+
+let saveIndicatorTimer = null;
+async function saveLocal() {
+  const txt = document.getElementById("save-status");
+  txt.textContent = "GUARDANDO...";
+  const db = await dbPromise;
+  return new Promise(res => {
+    const tx = db.transaction("store", "readwrite");
+    tx.objectStore("store").put(dbData, "data");
+    tx.oncomplete = () => {
+      clearTimeout(saveIndicatorTimer);
+      saveIndicatorTimer = setTimeout(() => { txt.textContent = "INDEXEDDB SYNC"; }, 350);
+      res();
+    };
+    tx.onerror = res;
+  });
+}
+
+function createEmptyEntry() {
+  return {
+    date: "", updatedAt: 0,
+    c1: { isMargarina: false, s1:"0", s2:"0", s3:"0", s4:"0", price:"", again:"", critique:"", p1:"", p2:"" },
+    c2: { flavor:"", isSalado: false, s1:"0", s2:"0", s3:"0", s4:"0", price:"", again:"", critique:"", p1:"", p2:"" },
+    c3: { item:"", isSubstituted: false, dq:"", justify:"", s1:"0", s2:"0", s3:"0", s4:"0", price:"", again:"", critique:"", p1:"", p2:"" }
+  };
+}
+
+function normalize(entry) {
+  const base = createEmptyEntry();
+  if (!entry || typeof entry !== "object") return base;
+  const out = { ...base, ...entry };
+  CATS.forEach(c => out[c] = { ...base[c], ...(entry[c] || {}) });
+  return out;
+}
+
+function isCatEvaluated(cat) {
+  return [cat.s1, cat.s2, cat.s3, cat.s4].some(v => parseFloat(v) > 0);
+}
+
+function calcTotal(cat, isSalado) {
+  if (isSalado) return 0;
+  return [cat.s1, cat.s2, cat.s3, cat.s4].map(v => parseFloat(v) || 0).reduce((a,b) => a+b, 0);
+}
+
+function getEntryAudit(d) {
+  const hasC1 = isCatEvaluated(d.c1);
+  const hasC2 = d.c2.isSalado || isCatEvaluated(d.c2);
+  const hasC3 = isCatEvaluated(d.c3);
+
+  const evalCount = (hasC1 ? 1 : 0) + (hasC2 ? 1 : 0) + (hasC3 ? 1 : 0);
+  if (evalCount === 0) return { status: "unvisited", score: 0, evalCount: 0, requiredCount: 3 };
+
+  const requiredCount = d.c2.isSalado ? 2 : 3;
+  const isComplete = hasC1 && hasC2 && hasC3;
+
+  const t1 = calcTotal(d.c1, false);
+  const t2 = calcTotal(d.c2, d.c2.isSalado);
+  const t3 = calcTotal(d.c3, false);
+
+  const validScores = [t1];
+  if (!d.c2.isSalado) validScores.push(t2);
+  validScores.push(t3);
+
+  const avg = validScores.reduce((a,b) => a+b, 0) / requiredCount;
+
+  return { status: isComplete ? "complete" : "partial", score: avg, evalCount, requiredCount };
+}
+
+function setSector(btn) {
+  document.querySelectorAll("#filter-sector button").forEach(b => b.classList.toggle("active", b === btn));
+  filterSector = btn.dataset.sec;
+  renderList();
+}
+
+function rangeInput(idx, cat, key, label, val) {
+  const v = val || 0;
+  return `
+    <div class="range-wrap">
+      <div class="range-header"><span>${label}</span> <span id="val-${idx}-${cat}-${key}" class="range-val">${v}</span></div>
+      <input type="range" min="0" max="10" step="0.5" value="${v}" oninput="updScore(this, ${idx},'${cat}','${key}')">
+    </div>`;
+}
+
+function renderFlavorChips(idx, cat, currentVal) {
+  const field = cat === "c2" ? "flavor" : "item";
+  return `<div class="chips-wrap">
+    ${FLAVOR_CHIPS.map(label => {
+      const isSelected = currentVal && currentVal.toLowerCase() === label.toLowerCase();
+      return `<button type="button" class="chip ${isSelected ? 'selected' : ''}" onclick="pickChip(${idx}, '${cat}', '${field}', '${label}')">${label}</button>`;
+    }).join("")}
+  </div>`;
+}
+
+function renderPhotos(idx, cat, data) {
+  const box = (key, label) => {
+    const hasImg = !!data[key];
+    return `
+    <label class="photo-box">
+      ${hasImg ? `<img src="${esc(data[key])}"><button type="button" class="photo-del" onclick="removePhoto(event, ${idx}, '${cat}', '${key}')">×</button>` : ''}
+      <svg class="i"><use href="#i-cam"/></svg><span style="font-size:10px;text-transform:uppercase;font-weight:700;">${label}</span>
+      <input type="file" accept="image/*" onchange="handlePhoto(event, ${idx}, '${cat}', '${key}')">
+    </label>`;
+  };
+  return `<div class="photo-upload-grid">${box("p1", "Look/Exterior")}${box("p2", "Interior")}</div>`;
+}
+
+function renderList() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const container = document.getElementById("bakery-list");
+  const parts = [];
+
+  BAKERIES.forEach((bObj, idx) => {
+    const { name, zone, sector } = bObj;
+    const d = dbData[idx];
+    const audit = getEntryAudit(d);
+
+    if (filterSector !== "all" && sector !== filterSector) return;
+    if (q && !name.toLowerCase().includes(q) && !zone.toLowerCase().includes(q)) return;
+
+    const t1 = calcTotal(d.c1, false);
+    const t2 = calcTotal(d.c2, d.c2.isSalado);
+    const t3 = calcTotal(d.c3, false);
+    const open = openCardId === idx;
+
+    let badgeClass = "pending", badgeTxt = "PENDIENTE";
+    if (audit.status === "complete") { badgeClass = "status-done"; badgeTxt = "COMPLETA"; }
+    else if (audit.status === "partial") { badgeClass = "status-partial"; badgeTxt = "PARCIAL"; }
+
+    const meta = audit.status !== "unvisited"
+      ? `<span>CLASSIC: ${fmt(t1)}</span><span>RELLENO: ${d.c2.isSalado ? 'DESC.' : fmt(t2)}</span><span>CAT III: ${fmt(t3)}</span>`
+      : `<span>SIN EVALUAR</span>`;
+
+    parts.push(`
+    <div class="bakery-row ${open ? 'open' : ''}" id="card-${idx}">
+      <div class="bakery-header" onclick="toggleCard(${idx})">
+        <span class="b-num">${String(idx+1).padStart(2, "0")}</span>
+        <div>
+          <div class="b-name">${esc(name)} <span class="b-zone">${esc(zone)}</span></div>
+          <div class="b-meta">${meta}</div>
+        </div>
+        <span class="b-status ${badgeClass}">${badgeTxt}</span>
+      </div>
+
+      ${open ? `<div class="bakery-body">
+        <div style="margin: 16px 0;">
+          <label style="font-size:12px; font-weight:700; text-transform:uppercase;">Fecha de visita:</label>
+          <input type="date" value="${esc(d.date)}" onchange="upd(${idx}, 'date', null, this.value)" style="margin-top:8px;">
+        </div>
+
+        <!-- CATEGORIA 1 -->
+        <details ${t1 > 0 ? '' : 'open'}>
+          <summary>I. Classic Croissant <span style="font-family:var(--mono); color:var(--accent);">${fmt(t1)}/40</span></summary>
+          <div class="details-content">
+            <label class="switch-row danger">
+              <span>Penalización Margarina</span>
+              <input type="checkbox" ${d.c1.isMargarina ? 'checked' : ''} onchange="toggleMargarina(${idx}, this.checked)">
+            </label>
+            ${renderPhotos(idx, 'c1', d.c1)}
+            ${rangeInput(idx,'c1','s1','Look (1-10)',d.c1.s1)}
+            ${rangeInput(idx,'c1','s2', d.c1.isMargarina ? 'Materiales (Penalizado)' : 'Materiales (1-10)', d.c1.s2)}
+            ${rangeInput(idx,'c1','s3','Laminado (1-10)',d.c1.s3)}
+            ${rangeInput(idx,'c1','s4','Sabor/Textura',d.c1.s4)}
+            
+            <textarea placeholder="Crítica técnica..." oninput="upd(${idx},'c1','critique',this.value)" style="margin-bottom:12px;">${esc(d.c1.critique)}</textarea>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <input type="number" step="0.01" placeholder="Precio $" value="${esc(d.c1.price)}" oninput="upd(${idx},'c1','price',this.value)">
+              <select onchange="upd(${idx},'c1','again',this.value)">
+                <option value="">¿Volvería?</option>
+                <option value="Sí" ${d.c1.again==='Sí'?'selected':''}>Sí</option>
+                <option value="No" ${d.c1.again==='No'?'selected':''}>No</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <!-- CATEGORIA 2 -->
+        <details>
+          <summary>II. Croissant Relleno <span style="font-family:var(--mono); color:var(--accent);">${d.c2.isSalado ? 'DESC' : fmt(t2)}/40</span></summary>
+          <div class="details-content">
+            <label class="switch-row danger">
+              <span>Descalificar (Salado)</span>
+              <input type="checkbox" ${d.c2.isSalado ? 'checked' : ''} onchange="toggleSalado(${idx}, this.checked)">
+            </label>
+            <div style="opacity: ${d.c2.isSalado ? '0.3' : '1'}; pointer-events: ${d.c2.isSalado ? 'none' : 'auto'};">
+              ${renderFlavorChips(idx, "c2", d.c2.flavor)}
+              <input type="text" placeholder="Sabor elegido..." value="${esc(d.c2.flavor)}" oninput="upd(${idx},'c2','flavor',this.value)" style="margin-bottom:12px;">
+              ${renderPhotos(idx, 'c2', d.c2)}
+              ${rangeInput(idx,'c2','s1','Look/Textura',d.c2.s1)}
+              ${rangeInput(idx,'c2','s2','Calidad Relleno',d.c2.s2)}
+              ${rangeInput(idx,'c2','s3','Cantidad Relleno',d.c2.s3)}
+              ${rangeInput(idx,'c2','s4','Sabor Global',d.c2.s4)}
+              
+              <textarea placeholder="Crítica técnica..." oninput="upd(${idx},'c2','critique',this.value)" style="margin-bottom:12px;">${esc(d.c2.critique)}</textarea>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <input type="number" step="0.01" placeholder="Precio $" value="${esc(d.c2.price)}" oninput="upd(${idx},'c2','price',this.value)">
+                <select onchange="upd(${idx},'c2','again',this.value)">
+                  <option value="">¿Volvería?</option>
+                  <option value="Sí" ${d.c2.again==='Sí'?'selected':''}>Sí</option>
+                  <option value="No" ${d.c2.again==='No'?'selected':''}>No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- CATEGORIA 3 -->
+        <details>
+          <summary>III. Novelty Item <span style="font-family:var(--mono); color:var(--accent);">${fmt(t3)}/40</span></summary>
+          <div class="details-content">
+             <label class="switch-row">
+              <span>Sustituir por 2do Relleno</span>
+              <input type="checkbox" ${d.c3.isSubstituted ? 'checked' : ''} onchange="upd(${idx},'c3','isSubstituted',this.checked); renderList();">
+            </label>
+            ${d.c3.isSubstituted ? `<input type="text" placeholder="Motivo de descalificación..." value="${esc(d.c3.dq)}" oninput="upd(${idx},'c3','dq',this.value)" style="margin-bottom:12px;">` : ''}
+            
+            <input type="text" placeholder="${d.c3.isSubstituted ? 'Sabor 2do Croissant...' : 'Ítem de Autor...'}" value="${esc(d.c3.item)}" oninput="upd(${idx},'c3','item',this.value)" style="margin-bottom:12px;">
+            ${renderPhotos(idx, 'c3', d.c3)}
+            ${rangeInput(idx,'c3','s1', d.c3.isSubstituted ? 'Look/Textura' : 'Masa', d.c3.s1)}
+            ${rangeInput(idx,'c3','s2', d.c3.isSubstituted ? 'Calidad Relleno' : 'Materiales', d.c3.s2)}
+            ${rangeInput(idx,'c3','s3', d.c3.isSubstituted ? 'Cantidad Relleno' : 'Relleno', d.c3.s3)}
+            ${rangeInput(idx,'c3','s4', d.c3.isSubstituted ? 'Sabor Global' : 'Sabor Distintivo', d.c3.s4)}
+            
+            <textarea placeholder="Crítica detallada..." oninput="upd(${idx},'c3','critique',this.value)" style="margin-bottom:12px;">${esc(d.c3.critique)}</textarea>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <input type="number" step="0.01" placeholder="Precio $" value="${esc(d.c3.price)}" oninput="upd(${idx},'c3','price',this.value)">
+              <select onchange="upd(${idx},'c3','again',this.value)">
+                <option value="">¿Volvería?</option>
+                <option value="Sí" ${d.c3.again==='Sí'?'selected':''}>Sí</option>
+                <option value="No" ${d.c3.again==='No'?'selected':''}>No</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <button class="btn" style="margin-top:16px;" onclick="launchVeredicto(${idx})">Procesar Veredicto & Story</button>
+      </div>` : ""}
+    </div>`);
+  });
+
+  container.innerHTML = parts.length ? parts.join("") : `<div class="empty-state"><p>Sin resultados.</p></div>`;
+}
+
+function toggleCard(idx) {
+  openCardId = openCardId === idx ? null : idx;
+  renderList();
+  if (openCardId !== null) {
+    setTimeout(() => {
+      const el = document.getElementById(`card-${idx}`);
+      const top = el.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top, behavior: "smooth" });
+    }, 50);
+  }
+}
+
+function touch(idx) {
+  dbData[idx].updatedAt = Date.now();
+  saveLocal();
+}
+
+function upd(idx, cat, field, val) {
+  if (!field) dbData[idx][cat] = val;
+  else dbData[idx][cat][field] = val;
+  touch(idx);
+}
+
+function updScore(input, idx, cat, key) {
+  haptic();
+  let v = input.value;
+  document.getElementById(`val-${idx}-${cat}-${key}`).textContent = v;
+  dbData[idx][cat][key] = v;
+  
+  const isSalado = cat === "c2" && dbData[idx].c2.isSalado;
+  const totEl = document.querySelector(`#card-${idx} details summary span`);
+  // Will update full list on next render, but keeping this fast for slider UI
+  touch(idx);
+}
+
+function pickChip(idx, cat, field, label) {
+  haptic();
+  dbData[idx][cat][field] = label.startsWith("Otro") ? prompt("Ingresa el sabor:") || "" : label;
+  touch(idx);
+  renderList();
+}
+
+function toggleMargarina(idx, checked) {
+  haptic();
+  dbData[idx].c1.isMargarina = checked;
+  if (checked && parseFloat(dbData[idx].c1.s2) > 4) dbData[idx].c1.s2 = "4";
+  touch(idx);
+  renderList();
+}
+
+function toggleSalado(idx, checked) {
+  haptic();
+  dbData[idx].c2.isSalado = checked;
+  if (checked) {
+    dbData[idx].c2.s1 = "0"; dbData[idx].c2.s2 = "0"; dbData[idx].c2.s3 = "0"; dbData[idx].c2.s4 = "0";
+  }
+  touch(idx);
+  renderList();
+}
+
+function handlePhoto(e, idx, cat, pKey) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxW = 900;
+      const scale = img.width > maxW ? maxW / img.width : 1;
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      dbData[idx][cat][pKey] = canvas.toDataURL("image/jpeg", 0.78);
+      touch(idx);
+      renderList();
+      toast("Fotografía guardada");
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(e, idx, cat, pKey) {
+  e.preventDefault(); e.stopPropagation();
+  haptic();
+  if (!confirm("¿Eliminar fotografía?")) return;
+  dbData[idx][cat][pKey] = "";
+  touch(idx);
+  renderList();
+}
+
+function setRankMode(btn) {
+  document.querySelectorAll("#rank-category button").forEach(b => b.classList.toggle("active", b === btn));
+  rankMode = btn.dataset.v;
+  renderRanking();
+}
+
+function renderRanking() {
+  const list = document.getElementById("ranking-list");
+  const kpiBox = document.getElementById("rank-kpis");
+
+  const completed = BAKERIES.map((b, i) => ({ b, i, a: getEntryAudit(dbData[i]) })).filter(x => x.a.status !== "unvisited");
+  const bestAvg = completed.length ? Math.max(...completed.map(x => x.a.score)) : 0;
+  const bestPuro = Math.max(0, ...BAKERIES.map((_, i) => calcTotal(dbData[i].c1, false)));
+
+  if (kpiBox) {
+    kpiBox.innerHTML = `
+      <div class="kpi-box"><div class="kpi-val">${completed.length} / 36</div><div class="kpi-lbl">Auditadas</div></div>
+      <div class="kpi-box"><div class="kpi-val">${fmt(bestAvg)}</div><div class="kpi-lbl">Top Score</div></div>
+      <div class="kpi-box"><div class="kpi-val">${fmt(bestPuro)}</div><div class="kpi-lbl">Mejor Classic</div></div>
+      <div class="kpi-box"><div class="kpi-val">09 NOV</div><div class="kpi-lbl">Vigencia</div></div>
+    `;
+  }
+
+  const ranked = BAKERIES.map((bObj, idx) => {
+    const d = dbData[idx];
+    const audit = getEntryAudit(d);
+    let score = 0;
+    if (rankMode === "total") score = audit.score;
+    else if (rankMode === "c1") score = calcTotal(d.c1, false);
+    else if (rankMode === "c2") score = calcTotal(d.c2, d.c2.isSalado);
+    else if (rankMode === "c3") score = calcTotal(d.c3, false);
+    return { name: bObj.name, zone: bObj.zone, idx, score: Math.round(score * 10) / 10, status: audit.status };
+  }).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  if (!ranked.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <h3>El podio está vacío</h3>
+        <p>Realiza tu primera auditoría técnica para habilitar la telemetría.</p>
+        <button class="btn" style="width: auto;" onclick="switchTab('eval')">Evaluar Ahora</button>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = `<div class="podium-list">` + ranked.map((item, i) => `
+    <div class="rank-row" onclick="jumpToBakery(${item.idx})">
+      <div class="rank-pos">#${i + 1}</div>
+      <div>
+        <div style="font-weight: 800; text-transform: uppercase;">${esc(item.name)}</div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-light); margin-top: 4px;">${esc(item.zone)}</div>
+      </div>
+      <div class="rank-score">${fmt(item.score)}</div>
+    </div>`).join("") + `</div>`;
+}
+
+function jumpToBakery(idx) {
+  openCardId = idx;
+  switchTab("eval");
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".nav-link, .mob-tab").forEach(b => {
+    if(b.dataset.tab === tab || b.onclick.toString().includes(`'${tab}'`)) b.classList.add("active");
+    else b.classList.remove("active");
+  });
+  ["home", "eval", "rank", "rules"].forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if (t === tab) { el.classList.add("active"); } 
+    else { el.classList.remove("active"); }
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (tab === "rank") renderRanking();
+  if (tab === "eval") renderList();
+}
+
+function launchVeredicto(idx) {
+  const d = dbData[idx];
+  const audit = getEntryAudit(d);
+  if (audit.status === "unvisited") { toast("Faltan datos"); return; }
+
+  document.getElementById("veredicto-title").textContent = BAKERIES[idx].name;
+  document.getElementById("veredicto-score").textContent = `SCORE: ${fmt(audit.score)} / 40.0`;
+  
+  const icon = document.getElementById("veredicto-icon");
+  if (audit.status === "partial") icon.textContent = "⏳";
+  else if (audit.score >= 38) icon.textContent = "👑";
+  else if (audit.score >= 34) icon.textContent = "🥇";
+  else if (audit.score >= 26) icon.textContent = "🥈";
+  else icon.textContent = "🥉";
+
+  document.getElementById("btn-share-story").onclick = () => generateInstagramStory(idx);
+  document.getElementById("veredicto-overlay").style.display = "flex";
+}
+
+function closeVeredicto() {
+  document.getElementById("veredicto-overlay").style.display = "none";
+}
+
+function generateInstagramStory(idx) {
+  const d = dbData[idx];
+  const bObj = BAKERIES[idx];
+  const audit = getEntryAudit(d);
+  const canvas = document.getElementById("story-canvas");
+  const ctx = canvas.getContext("2d");
+
+  // Editorial Base (Off-white)
+  ctx.fillStyle = "#F9F8F6";
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  // Solid Border
+  ctx.strokeStyle = "#1C1917";
+  ctx.lineWidth = 12;
+  ctx.strokeRect(40, 40, 1000, 1840);
+
+  // Header
+  ctx.fillStyle = "#8C6239";
+  ctx.font = "italic 400 52px 'Fraunces', serif";
+  ctx.textAlign = "center";
+  ctx.fillText("CRUST & CRUMB UIO", 540, 160);
+
+  // Bakery Name
+  ctx.fillStyle = "#1C1917";
+  ctx.font = "800 72px 'Manrope', sans-serif";
+  ctx.fillText(bObj.name.toUpperCase(), 540, 260);
+
+  ctx.fillStyle = "#57534E";
+  ctx.font = "700 32px 'JetBrains Mono', monospace";
+  ctx.fillText(bObj.zone.toUpperCase(), 540, 320);
+
+  const imgData = d.c1.p1 || d.c1.p2 || d.c2.p1;
+  const finishCard = () => {
+    // Bottom Score Box
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#1C1917";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.rect(140, 1300, 800, 340);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = "#1C1917";
+    ctx.font = "italic 400 96px 'Fraunces', serif";
+    ctx.fillText(`${fmt(audit.score)} / 40.0`, 540, 1440);
+
+    ctx.fillStyle = "#8C6239";
+    ctx.font = "700 28px 'JetBrains Mono', monospace";
+    ctx.fillText(`CLASSIC: ${fmt(calcTotal(d.c1,false))} | RELLENO: ${d.c2.isSalado ? 'DESC' : fmt(calcTotal(d.c2,false))} | CAT III: ${fmt(calcTotal(d.c3,false))}`, 540, 1530);
+
+    let st = "AUDITORÍA PARCIAL";
+    if (audit.status === "complete") {
+      if (audit.score >= 38) st = "RANGO: EXCEPCIONAL";
+      else if (audit.score >= 34) st = "RANGO: ALTA CALIDAD";
+      else if (audit.score >= 26) st = "RANGO: ESTÁNDAR";
+      else st = "RANGO: NO RECOMENDADO";
+    }
+    
+    ctx.fillStyle = "#57534E";
+    ctx.font = "800 36px 'Manrope', sans-serif";
+    ctx.fillText(st, 540, 1600);
+
+    const a = document.createElement("a");
+    a.download = `Story-${bObj.name.replace(/\s+/g,'-')}.png`;
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+    toast("Story Descargada");
+  };
+
+  if (imgData) {
+    const im = new Image();
+    im.onload = () => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(140, 420, 800, 800);
+      ctx.clip();
+      // Grayscale/contrast filter emulation via globalCompositeOperation could be added here, 
+      // but standard drawImage keeps it fast and clean.
+      ctx.drawImage(im, 140, 420, 800, 800);
+      ctx.restore();
+      ctx.strokeStyle = "#1C1917";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(140, 420, 800, 800);
+      finishCard();
+    };
+    im.src = imgData;
+  } else {
+    ctx.fillStyle = "#E7E0D8";
+    ctx.fillRect(140, 420, 800, 800);
+    ctx.strokeRect(140, 420, 800, 800);
+    finishCard();
+  }
+}
+
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(dbData)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `crust-crumb-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = async ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      BAKERIES.forEach((_, i) => { dbData[i] = normalize(parsed[i]); });
+      await saveLocal();
+      renderList();
+      toast("Respaldo restaurado");
+    } catch { toast("Archivo inválido"); }
+  };
+  r.readAsText(file);
+}
+
+async function init() {
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  const local = await loadLocal();
+  BAKERIES.forEach((_, i) => dbData[i] = normalize(local[i]));
+}
+
+init();
+</script>
+</body>
+</html>
