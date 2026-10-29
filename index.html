@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Crust & Crumb UIO — Guía de Autor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #F9F8F6;
+    --bg-white: #FFFFFF;
+    --ink: #1C1917;
+    --ink-light: #57534E;
+    --border: #D6D3D1;
+    --accent: #D97706; /* Web page vibrant orange/caramel */
+    --accent-dark: #92400E;
+    --accent-light: #FEF3C7;
+    --alert: #991B1B;
+    --success: #166534;
+    
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Manrope", -apple-system, sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; font-family: var(--sans); background: var(--bg-white); color: var(--ink); font-size: 15px; line-height: 1.6; padding-bottom: 80px; }
+
+  /* Edge to Edge Layout */
+  .full-width { width: 100%; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  
+  /* Typography */
+  h1, h2, h3, h4 { font-family: var(--serif); color: var(--ink); margin: 0; font-weight: 600; }
+  p { margin: 0 0 16px; }
+  
+  /* Navigation */
+  header { position: sticky; top: 0; z-index: 100; background: var(--bg-white); border-bottom: 1px solid var(--border); }
+  .nav-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
+  .brand { font-family: var(--serif); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
+  .brand em { color: var(--accent); font-style: italic; }
+  
+  .desktop-nav { display: none; gap: 32px; }
+  @media (min-width: 768px) {
+    .desktop-nav { display: flex; align-items: center; }
+    .mobile-nav { display: none !important; }
+    body { padding-bottom: 0; }
+  }
+  .nav-link { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-light); cursor: pointer; text-decoration: none; padding-bottom: 4px; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .nav-link:hover, .nav-link.active { color: var(--ink); border-color: var(--accent); }
+
+  .mobile-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-white); border-top: 1px solid var(--border); display: flex; z-index: 99; padding-bottom: env(safe-area-inset-bottom); }
+  .mob-tab { flex: 1; padding: 16px 0; text-align: center; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--ink-light); border: none; background: transparent; cursor: pointer; }
+  .mob-tab.active { color: var(--accent); border-top: 2px solid var(--accent); margin-top: -1px; }
+
+  /* Tabs */
+  .tab-pane { display: none; animation: fadeIn 0.4s ease; }
+  .tab-pane.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Hero Section */
+  .hero { background: var(--bg-main); padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .hero-title { font-size: clamp(36px, 8vw, 56px); line-height: 1.1; margin-bottom: 16px; text-transform: uppercase; letter-spacing: -0.02em; }
+  .hero-title em { color: var(--accent); }
+  .hero-desc { font-size: 16px; color: var(--ink-light); max-width: 600px; margin-bottom: 24px; }
+
+  /* Content Sections */
+  .section { padding: 60px 0; }
+  .section-alt { background: var(--bg-main); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  
+  .protocol-block { margin-bottom: 40px; }
+  .protocol-block h3 { font-size: 28px; margin-bottom: 16px; color: var(--accent-dark); }
+  .protocol-block ul, .protocol-block ol { padding-left: 20px; color: var(--ink-light); }
+  .protocol-block li { margin-bottom: 12px; }
+  .protocol-block b { color: var(--ink); }
+
+  .cat-box { background: var(--bg-white); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--accent); }
+  .cat-box h4 { font-size: 20px; margin-bottom: 12px; }
+
+  /* Bakery List */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+  .filter-btn { padding: 10px 20px; font-family: var(--sans); font-size: 12px; font-weight: 700; text-transform: uppercase; border: 1px solid var(--border); background: var(--bg-white); cursor: pointer; border-radius: 4px; white-space: nowrap; }
+  .filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .bakery-card { border: 1px solid var(--border); background: var(--bg-white); margin-bottom: 16px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: box-shadow 0.2s; }
+  .bakery-card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
+  .b-header { padding: 20px; display: grid; grid-template-columns: 40px 1fr auto; gap: 16px; align-items: center; cursor: pointer; }
+  .b-header:hover { background: #FAFAFA; }
+  .b-num { font-family: var(--serif); font-size: 28px; font-style: italic; color: var(--accent); font-weight: 600; }
+  .b-name { font-weight: 800; font-size: 18px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .b-zone { font-family: var(--mono); font-size: 11px; padding: 4px 8px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; }
+  .b-map { font-size: 11px; font-weight: 700; color: #fff; background: var(--ink); text-decoration: none; padding: 4px 8px; border-radius: 4px; }
+  
+  .b-body { display: none; padding: 0 20px 24px; border-top: 1px solid var(--border); background: #FCFCFC; }
+  .bakery-card.open .b-body { display: block; }
+
+  /* Form Elements */
+  input[type="text"], input[type="date"], input[type="number"], select, textarea {
+    width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--sans); font-size: 15px; margin-bottom: 12px;
+  }
+  textarea { min-height: 100px; resize: vertical; }
+  
+  .btn { display: inline-block; width: 100%; padding: 16px; font-family: var(--sans); font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; background: var(--ink); color: #fff; border: none; border-radius: 6px; cursor: pointer; text-align: center; transition: background 0.2s; }
+  .btn:hover { background: var(--accent-dark); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+  .btn-outline:hover { background: var(--bg-main); }
+
+  /* Sliders & Scores */
+  .score-row { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 16px 0; }
+  @media(min-width: 640px) { .score-row { grid-template-columns: 1fr 1fr; } }
+  .slider-group { background: #fff; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; }
+  .slider-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--ink-light); }
+  .slider-val { font-family: var(--mono); color: var(--accent); font-size: 16px; }
+  input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+  input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #E5E5E5; border-radius: 2px; }
+  input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; -webkit-appearance: none; margin-top: -8px; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+  /* Economic Badges */
+  .badge-barato { display: inline-block; background: #ECFDF5; color: #047857; border: 1px solid #34D399; padding: 6px 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 4px; margin-top: 4px; }
+  .badge-estandar { display: inline-block; background: #F3F4F6; color: #374151; border: 1px solid #D1D5DB; padding: 6px 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 4px; margin-top: 4px; }
+  .badge-premium { display: inline-block; background: #FEF3C7; color: #B45309; border: 1px solid #FBBF24; padding: 6px 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 4px; margin-top: 4px; }
+  .badge-alert { display: inline-block; background: #FEF2F2; color: #B91C1C; border: 1px solid #F87171; padding: 6px 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 4px; margin-top: 4px; }
+
+  /* Accordions */
+  details { border: 1px solid var(--border); border-radius: 6px; background: #fff; margin-bottom: 12px; overflow: hidden; }
+  summary { padding: 16px 20px; font-family: var(--serif); font-size: 18px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; background: var(--bg-main); }
+  summary:hover { background: #F3F2F0; }
+  .details-body { padding: 20px; }
+
+  /* Compare & Radar */
+  .compare-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 24px; }
+  @media(min-width: 768px) { .compare-grid { grid-template-columns: 1fr 200px 1fr; align-items: center; } }
+  .compare-col { border: 1px solid var(--border); padding: 20px; border-radius: 8px; background: #fff; }
+  .radar-box { display: flex; justify-content: center; padding: 20px; background: #fff; border: 1px solid var(--border); border-radius: 8px; }
+
+  /* Photos */
+  .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .photo-upload { border: 2px dashed var(--border); aspect-ratio: 4/3; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; background: var(--bg-main); overflow: hidden; cursor: pointer; }
+  .photo-upload img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+  .photo-upload input { display: none; }
+  .photo-lbl { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--ink-light); position: relative; z-index: 2; }
+  .del-btn { position: absolute; top: 8px; right: 8px; background: var(--alert); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-weight: bold; z-index: 3; cursor: pointer; }
+
+  /* Ranking */
+  .rank-row { display: grid; grid-template-columns: 50px 1fr auto; align-items: center; padding: 20px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; background: #fff; }
+  .rank-row:nth-child(1) { border-color: var(--accent); background: var(--accent-light); border-width: 2px; }
+  .r-pos { font-family: var(--serif); font-size: 24px; font-weight: 700; color: var(--accent); }
+  .r-score { font-family: var(--mono); font-size: 20px; font-weight: 800; }
+
+  /* Toast & Overlay */
+  .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 24px; border-radius: 4px; font-size: 13px; font-weight: 700; text-transform: uppercase; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 1000; }
+  .toast.show { opacity: 1; }
+  
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+  .modal { background: #fff; padding: 40px; border-radius: 12px; max-width: 400px; width: 100%; text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrapper">
+    <div class="brand">CRUST &amp; CRUMB <em>UIO</em></div>
+    <nav class="desktop-nav">
+      <a class="nav-link active" onclick="switchTab('home')">Inicio</a>
+      <a class="nav-link" onclick="switchTab('eval')">Evaluación</a>
+      <a class="nav-link" onclick="switchTab('rank')">Ranking</a>
+      <a class="nav-link" onclick="switchTab('data')">Datos</a>
+    </nav>
+    <div style="font-family:var(--mono); font-size:11px; font-weight:700; background:var(--bg-main); padding:6px 12px; border:1px solid var(--border); border-radius:4px;" id="save-status">INDEXEDDB SYNC</div>
+  </div>
+</header>
+
+<nav class="mobile-nav">
+  <button class="mob-tab active" onclick="switchTab('home')">Inicio</button>
+  <button class="mob-tab" onclick="switchTab('eval')">Evaluar</button>
+  <button class="mob-tab" onclick="switchTab('rank')">Rank</button>
+  <button class="mob-tab" onclick="switchTab('data')">Data</button>
+</nav>
+
+<!-- HOME TAB -->
+<main id="tab-home" class="tab-pane active">
+  <section class="hero full-width">
+    <div class="container">
+      <h1 class="hero-title">EL ESTÁNDAR DEL <em>CROISSANT PERFECTO</em></h1>
+      <p class="hero-desc">El croissant representa la cúspide de la panadería artesanal: una delicada sinfonía de mantequilla, fermentación precisa y un laminado técnico impecable. Este sistema documenta y corona con rigor al mejor de Quito y sus valles.</p>
+      <button class="btn" style="max-width: 300px;" onclick="switchTab('eval')">INICIAR RUTA DE EVALUACIÓN →</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="protocol-block">
+        <h3>Protocolo Oficial de Evaluación y Ranking de Croissants y Bollería</h3>
+        <p style="color:var(--ink-light); font-size:16px;">Este documento establece los parámetros y el formato de registro para la evaluación estructurada de diversas panaderías y cafeterías.</p>
+      </div>
+
+      <div class="protocol-block">
+        <h4>Metodología y Reglas Generales</h4>
+        <ol>
+          <li><b>Vigencia de la Evaluación:</b> No se tomarán en cuenta experiencias previas. Toda visita degustación y documentación debe realizarse a partir del 9 de noviembre. Es obligatorio registrar la fecha exacta de la visita.</li>
+          <li><b>Registro Fotográfico Obligatorio:</b> Cada ítem evaluado debe contar estrictamente con dos (2) fotografías:
+            <ul style="margin-top:8px;">
+              <li><b>Foto 1 (Look/Exterior):</b> Antes de dar el primer bocado. Debe mostrar la estética del producto los colores la decoración (toppings si aplica) y permitir apreciar la calidad visual de los ingredientes.</li>
+              <li><b>Foto 2 (Estructura/Interior):</b> Un corte o mordisco que exponga claramente el laminado de la masa los alvéolos y la cantidad o distribución del relleno.</li>
+            </ul>
+          </li>
+          <li><b>Criterios Base de Puntuación:</b> Se evaluará la apariencia (look) la calidad de materiales la ejecución técnica (laminado) el sabor y la Relación Calidad-Precio (determinada por la premisa: "¿Vale la pena lo que se paga? ¿Volvería a comprarlo para satisfacer un antojo dulce?").</li>
+          <li><b>Lista Expandible:</b> El listado de establecimientos puede actualizarse en el futuro según sea necesario.</li>
+        </ol>
+      </div>
+
+      <div class="protocol-block">
+        <h4 style="margin-bottom:20px; font-size:24px; border-bottom:1px solid var(--border); padding-bottom:12px;">Definición de Categorías</h4>
+        
+        <div class="cat-box">
+          <h4>1. Classic Croissant</h4>
+          <ul>
+            <li><b>Objetivo:</b> Búsqueda de la autenticidad tradicional.</li>
+            <li><b>Criterios:</b> Apariencia de un verdadero croissant clásico con aroma profundo a mantequilla y masa auténticamente crujiente. Debe presentar un laminado técnico de múltiples capas bien definidas y un sabor donde destaque la mantequilla de alta calidad.</li>
+            <li><b>Evaluación:</b> Precio y relación calidad-precio.</li>
+          </ul>
+        </div>
+
+        <div class="cat-box">
+          <h4>2. Croissant Relleno</h4>
+          <ul>
+            <li><b>Objetivo:</b> Evaluación de la técnica combinada con sabor adicional.</li>
+            <li><b>Criterios:</b> Debe poseer decoración exterior atractiva pero mantener estrictamente la calidad la crocancia y la belleza del laminado del classic croissant. El relleno debe ser de excelente calidad con una cantidad abundante que logre complementar a la masa sin opacarla.</li>
+            <li><b>Sabores preferidos (no limitativos):</b> Chocolate pistacho almendras mora variaciones de cheesecake (NY limón) frutos rojos.</li>
+            <li><b>Restricción:</b> Los croissants salados quedan estrictamente descalificados de este ranking por considerarse una afrenta a la tradición francesa.</li>
+            <li><b>Evaluación:</b> Precio y relación calidad-precio.</li>
+          </ul>
+        </div>
+
+        <div class="cat-box">
+          <h4>3. Novelty Item (Ítem de Autor / Novedad)</h4>
+          <ul>
+            <li><b>Objetivo:</b> Evaluar propuestas diferenciadoras de panadería o hojaldre.</li>
+            <li><b>Criterios:</b> Productos a base de pan o masa hojaldrada con un relleno y sabor que los distinga de la bollería tradicional. Se permiten ítems salados aunque se alienta fuertemente la selección de ítems dulces que no sean croissants (ej. Pain au chocolat NY roll Pan Suisse Danés Berlinas Cinnamon rolls).</li>
+            <li><b>Restricción de Precio:</b> El ítem no debe superar los $4.00 (preferiblemente un máximo de $3.50).</li>
+            <li><b>Excepción y Descalificación:</b> Si el establecimiento no cuenta con un ítem que cumpla los requisitos (es de otra masa o excede el presupuesto o no es de interés) la categoría "Novelty" en ese local queda descalificada. Se debe documentar el motivo exacto de la descalificación y en su lugar se procederá a comprar y evaluar un segundo croissant relleno diferente bajo los criterios de la Categoría 2.</li>
+            <li><b>Evaluación:</b> Calidad de la masa el sabor la cantidad y calidad del relleno el precio y la relación calidad-precio.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- EVAL TAB -->
+<main id="tab-eval" class="tab-pane">
+  <section class="section">
+    <div class="container">
+      <input type="text" id="search" placeholder="Buscar panadería o sector..." oninput="renderList()" style="max-width: 500px;">
+      
+      <div class="filter-bar" id="filter-sector">
+        <button class="filter-btn active" data-sec="all" onclick="setSector(this)">Todos</button>
+        <button class="filter-btn" data-sec="Norte / Centro" onclick="setSector(this)">Norte/Centro</button>
+        <button class="filter-btn" data-sec="Cumbayá / Tumbaco" onclick="setSector(this)">Valles</button>
+        <button class="filter-btn" data-sec="Valle de los Chillos" onclick="setSector(this)">Chillos</button>
+      </div>
+
+      <div id="bakery-list"></div>
+    </div>
+  </section>
+</main>
+
+<!-- RANK TAB -->
+<main id="tab-rank" class="tab-pane">
+  <section class="section section-alt">
+    <div class="container">
+      <h2 style="font-size:32px; margin-bottom: 24px;">Comparador Lado a Lado</h2>
+      <div style="display:flex; gap:16px; margin-bottom:20px;">
+        <select id="comp-sel-1" onchange="renderComparison()"></select>
+        <select id="comp-sel-2" onchange="renderComparison()"></select>
+      </div>
+      <div id="compare-results"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid var(--border); padding-bottom:16px; margin-bottom: 24px;">
+        <h2 style="font-size:32px;">Clasificación Oficial</h2>
+        <div class="filter-bar" id="rank-category" style="margin:0; padding:0; border:none;">
+          <button class="filter-btn active" data-v="total" onclick="setRankMode(this)">General</button>
+          <button class="filter-btn" data-v="c1" onclick="setRankMode(this)">Classic</button>
+          <button class="filter-btn" data-v="c2" onclick="setRankMode(this)">Relleno</button>
+          <button class="filter-btn" data-v="c3" onclick="setRankMode(this)">Novelty</button>
+        </div>
+      </div>
+      <div id="ranking-list"></div>
+    </div>
+  </section>
+</main>
+
+<!-- DATA TAB -->
+<main id="tab-data" class="tab-pane">
+  <section class="hero full-width">
+    <div class="container">
+      <h2 class="hero-title" style="font-size: 40px;">MEMORIA LOCAL <em>INDEXEDDB</em></h2>
+      <p class="hero-desc">Todas tus calificaciones y fotografías se almacenan de forma segura en la base de datos interna de tu dispositivo (Zero-Backend).</p>
+      <div style="display:flex; gap:16px; max-width: 400px;">
+        <button class="btn" onclick="exportBackup()">Descargar Respaldo JSON</button>
+        <label class="btn btn-outline" style="text-align:center; padding:15px; cursor:pointer;">
+          Restaurar
+          <input type="file" accept=".json,application/json" style="display:none;" onchange="importBackup(event)">
+        </label>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Veredicto Modal -->
+<div class="overlay" id="veredicto-overlay" onclick="closeVeredicto()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div id="veredicto-icon" style="font-size: 64px; margin-bottom: 16px;">👑</div>
+    <h3 id="veredicto-title" style="font-size: 32px; margin-bottom: 8px;">Bakery Name</h3>
+    <div id="veredicto-score" style="font-family: var(--mono); font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 32px;">SCORE: 0 / 40</div>
+    <button class="btn" id="btn-share-story" style="margin-bottom: 12px;">Descargar Story (IG)</button>
+    <button class="btn btn-outline" onclick="closeVeredicto()">Cerrar</button>
+  </div>
+</div>
+
+<canvas id="story-canvas" width="1080" height="1920" style="display:none;"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+const BAKERIES = [
+  { name: "Panificadora Ambato", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "L'Artisan", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "Fankor", zone: "Orellana", sector: "Norte / Centro" },
+  { name: "Europa Cafe", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Hansel y Gretel", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Sweet and Coffee", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Cyrano", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Panasutra", zone: "La Pradera", sector: "Norte / Centro" },
+  { name: "Le Pan de Jerome", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "Pía Pastelería", zone: "La Pradera", sector: "Norte / Centro" },
+  { name: "Panecu", zone: "La Floresta", sector: "Norte / Centro" },
+  { name: "Bakery Alameda", zone: "La Mariscal", sector: "Norte / Centro" },
+  { name: "El Pan de Martín", zone: "La Vicentina", sector: "Norte / Centro" },
+  { name: "Bole", zone: "La Carolina", sector: "Norte / Centro" },
+  { name: "Chatelain", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "227 Resto-Café", zone: "La Carolina", sector: "Norte / Centro" },
+  { name: "Cyril", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "Uko Bread", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "Lecroissant", zone: "6 de Diciembre", sector: "Norte / Centro" },
+  { name: "Croissant Lovers", zone: "Iñaquito", sector: "Norte / Centro" },
+  { name: "Miam Miam", zone: "El Batán", sector: "Norte / Centro" },
+  { name: "Koke", zone: "Jipijapa", sector: "Norte / Centro" },
+  { name: "Panpe", zone: "Río Coca", sector: "Norte / Centro" },
+  { name: "Akao", zone: "El Bosque", sector: "Norte / Centro" },
+  { name: "Auqui Panera", zone: "Guayasamín", sector: "Cumbayá / Tumbaco" },
+  { name: "Corteza (UDLA)", zone: "Nayón", sector: "Cumbayá / Tumbaco" },
+  { name: "Oh Caffe", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "Il Pasticcino", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "Ambrosia (USFQ)", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "La Bakery (UIDE)", zone: "Simón Bolívar", sector: "Valle de los Chillos" },
+  { name: "Bruning Deli", zone: "Conocoto", sector: "Valle de los Chillos" },
+  { name: "Aroma", zone: "Conocoto", sector: "Valle de los Chillos" },
+  { name: "Atelier Sucre", zone: "La Armenia", sector: "Valle de los Chillos" },
+  { name: "La Panetteria", zone: "Valle de los Chillos", sector: "Valle de los Chillos" },
+  { name: "Chuta Madre", zone: "Centro", sector: "Norte / Centro" },
+  { name: "La Juana", zone: "Sur", sector: "Norte / Centro" },
+  { name: "Sweet Crumble", zone: "El Zurriago E8-18", sector: "Norte / Centro" },
+  { name: "Noon Cafe", zone: "170135, Quito", sector: "Norte / Centro" }
+];
+
+const CATS = ["c1", "c2", "c3"];
+let dbData = {};
+let openCardId = null;
+let filterSector = "all";
+let rankMode = "total";
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const fmt = n => Number.isInteger(n) ? n : n.toFixed(1);
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+// Database Setup
+const dbPromise = new Promise((resolve, reject) => {
+  const req = indexedDB.open("CrustCrumbUIO_DB_v2", 1);
+  req.onupgradeneeded = e => e.target.result.createObjectStore("store");
+  req.onsuccess = e => resolve(e.target.result);
+  req.onerror = e => reject(e);
+});
+
+async function loadLocal() {
+  const db = await dbPromise;
+  return new Promise(res => {
+    const req = db.transaction("store", "readonly").objectStore("store").get("data");
+    req.onsuccess = () => res(req.result || {});
+    req.onerror = () => res({});
+  });
+}
+
+let saveTimer = null;
+async function saveLocal() {
+  const txt = document.getElementById("save-status");
+  txt.textContent = "GUARDANDO...";
+  txt.style.color = "var(--accent)";
+  const db = await dbPromise;
+  return new Promise(res => {
+    const tx = db.transaction("store", "readwrite");
+    tx.objectStore("store").put(dbData, "data");
+    tx.oncomplete = () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => { txt.textContent = "INDEXEDDB SYNC"; txt.style.color = "inherit"; }, 500);
+      res();
+    };
+    tx.onerror = res;
+  });
+}
+
+function createEmptyEntry() {
+  return {
+    date: "", updatedAt: 0,
+    c1: { isMargarina: false, s1:"0", s2:"0", s3:"0", s4:"0", price:"", again:"", critique:"", p1:"", p2:"" },
+    c2: { flavor:"", isSalado: false, s1:"0", s2:"0", s3:"0", s4:"0", price:"", again:"", critique:"", p1:"", p2:"" },
+    c3: { item:"", isSubstituted: false, dq:"", justify:"", s1:"0", s2:"0", s3:"0", s4:"0", price:"", again:"", critique:"", p1:"", p2:"" }
+  };
+}
+
+function normalize(entry) {
+  const base = createEmptyEntry();
+  if (!entry || typeof entry !== "object") return base;
+  const out = { ...base, ...entry };
+  CATS.forEach(c => out[c] = { ...base[c], ...(entry[c] || {}) });
+  return out;
+}
+
+function isCatEvaluated(cat) { return [cat.s1, cat.s2, cat.s3, cat.s4].some(v => parseFloat(v) > 0); }
+function calcTotal(cat, isSalado) {
+  if (isSalado) return 0;
+  return [cat.s1, cat.s2, cat.s3, cat.s4].map(v => parseFloat(v) || 0).reduce((a,b) => a+b, 0);
+}
+
+function getEntryAudit(d) {
+  const hasC1 = isCatEvaluated(d.c1);
+  const hasC2 = d.c2.isSalado || isCatEvaluated(d.c2);
+  const hasC3 = isCatEvaluated(d.c3);
+  const evalCount = (hasC1 ? 1 : 0) + (hasC2 ? 1 : 0) + (hasC3 ? 1 : 0);
+  if (evalCount === 0) return { status: "unvisited", score: 0, evalCount: 0, requiredCount: 3 };
+
+  const requiredCount = d.c2.isSalado ? 2 : 3;
+  const t1 = calcTotal(d.c1, false);
+  const t2 = calcTotal(d.c2, d.c2.isSalado);
+  const t3 = calcTotal(d.c3, false);
+  
+  const validScores = [t1];
+  if (!d.c2.isSalado) validScores.push(t2);
+  validScores.push(t3);
+  
+  const avg = validScores.reduce((a,b) => a+b, 0) / requiredCount;
+  return { status: (hasC1 && hasC2 && hasC3) ? "complete" : "partial", score: avg, evalCount, requiredCount };
+}
+
+// Visual Generators
+function getPriceBadgeHTML(priceVal, zone) {
+  const precio = parseFloat(priceVal);
+  if (isNaN(precio) || precio <= 0) return "";
+  if (precio < 1.20) return `<span class="badge-barato">Hallazgo Económico</span>`;
+  if (precio <= 2.20) return `<span class="badge-estandar">Precio Estándar UIO</span>`;
+  if (["Cumbayá", "Tumbaco", "Nayón", "Guayasamín"].includes(zone)) return `<span class="badge-premium">Premium / Valle</span>`;
+  if (["Centro", "Sur", "Conocoto", "Valle de los Chillos", "La Armenia"].includes(zone)) return `<span class="badge-alert">Costoso para Zona</span>`;
+  return `<span class="badge-premium">Alta Gama / Premium</span>`;
+}
+
+function rangeInput(idx, cat, key, label, val) {
+  const v = val || 0;
+  return `
+    <div class="slider-group">
+      <div class="slider-header"><span>${label}</span> <span id="val-${idx}-${cat}-${key}" class="slider-val">${v}</span></div>
+      <input type="range" min="0" max="10" step="0.5" value="${v}" oninput="updScore(this, ${idx},'${cat}','${key}')">
+    </div>`;
+}
+
+function renderPhotos(idx, cat, data) {
+  const box = (key, label) => {
+    const hasImg = !!data[key];
+    return `
+    <label class="photo-upload">
+      ${hasImg ? `<img src="${esc(data[key])}"><button type="button" class="del-btn" onclick="removePhoto(event, ${idx}, '${cat}', '${key}')">×</button>` : ''}
+      <span class="photo-lbl">📸 ${label}</span>
+      <input type="file" accept="image/*" onchange="handlePhoto(event, ${idx}, '${cat}', '${key}')">
+    </label>`;
+  };
+  return `<div class="photo-grid">${box("p1", "Look/Exterior")}${box("p2", "Interior/Estructura")}</div>`;
+}
+
+function setSector(btn) {
+  document.querySelectorAll("#filter-sector button").forEach(b => b.classList.toggle("active", b === btn));
+  filterSector = btn.dataset.sec;
+  renderList();
+}
+
+function renderList() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const container = document.getElementById("bakery-list");
+  const parts = [];
+
+  BAKERIES.forEach((bObj, idx) => {
+    const { name, zone, sector } = bObj;
+    const d = dbData[idx];
+    const audit = getEntryAudit(d);
+
+    if (filterSector !== "all" && sector !== filterSector) return;
+    if (q && !name.toLowerCase().includes(q) && !zone.toLowerCase().includes(q)) return;
+
+    const t1 = calcTotal(d.c1, false);
+    const t2 = calcTotal(d.c2, d.c2.isSalado);
+    const t3 = calcTotal(d.c3, false);
+    const open = openCardId === idx;
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + zone + ' Quito')}`;
+
+    parts.push(`
+    <div class="bakery-card ${open ? 'open' : ''}" id="card-${idx}">
+      <div class="b-header" onclick="toggleCard(${idx})">
+        <span class="b-num">${String(idx+1).padStart(2, "0")}</span>
+        <div>
+          <div class="b-name">${esc(name)} 
+            <span class="b-zone">${esc(zone)}</span>
+            <a href="${mapsUrl}" target="_blank" class="b-map" onclick="event.stopPropagation()">🗺️ Maps</a>
+          </div>
+          <div style="font-family:var(--mono); font-size:12px; margin-top:6px; color:var(--ink-light);">
+            CLASSIC: ${fmt(t1)} | RELLENO: ${d.c2.isSalado ? 'DESC' : fmt(t2)} | CAT III: ${fmt(t3)}
+          </div>
+        </div>
+      </div>
+
+      ${open ? `<div class="b-body">
+        <div style="margin: 20px 0;">
+          <label style="font-size:12px; font-weight:800; text-transform:uppercase;">Fecha de Visita</label>
+          <input type="date" value="${esc(d.date)}" onchange="upd(${idx}, 'date', null, this.value)">
+        </div>
+
+        <!-- CATEGORIA 1 -->
+        <details ${t1 > 0 ? '' : 'open'}>
+          <summary>I. Classic Croissant <span id="sum-${idx}-c1" style="font-family:var(--mono); color:var(--accent);">${fmt(t1)}/40</span></summary>
+          <div class="details-body">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#FEF2F2; color:#B91C1C; padding:12px 16px; border:1px solid #F87171; border-radius:6px; margin-bottom:16px; font-weight:700; font-size:13px;">
+              <span>Penalización Margarina</span>
+              <input type="checkbox" ${d.c1.isMargarina ? 'checked' : ''} onchange="toggleMargarina(${idx}, this.checked)" style="width:18px;height:18px;margin:0;">
+            </div>
+            
+            ${renderPhotos(idx, 'c1', d.c1)}
+            <div class="score-row">
+              ${rangeInput(idx,'c1','s1','Look (1-10)',d.c1.s1)}
+              ${rangeInput(idx,'c1','s2', d.c1.isMargarina ? 'Materiales (Penalizado)' : 'Materiales (1-10)', d.c1.s2)}
+              ${rangeInput(idx,'c1','s3','Laminado (1-10)',d.c1.s3)}
+              ${rangeInput(idx,'c1','s4','Sabor/Textura',d.c1.s4)}
+            </div>
+            
+            <textarea placeholder="Crítica técnica..." oninput="upd(${idx},'c1','critique',this.value)">${esc(d.c1.critique)}</textarea>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <div>
+                <input type="number" step="0.01" placeholder="Precio $" value="${esc(d.c1.price)}" oninput="upd(${idx},'c1','price',this.value); document.getElementById('pbadge-${idx}-c1').innerHTML=getPriceBadgeHTML(this.value, '${zone}')">
+                <div id="pbadge-${idx}-c1">${getPriceBadgeHTML(d.c1.price, zone)}</div>
+              </div>
+              <select onchange="upd(${idx},'c1','again',this.value)">
+                <option value="">¿Volvería?</option>
+                <option value="Sí" ${d.c1.again==='Sí'?'selected':''}>Sí, excelente</option>
+                <option value="No" ${d.c1.again==='No'?'selected':''}>No</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <!-- CATEGORIA 2 -->
+        <details>
+          <summary>II. Croissant Relleno <span id="sum-${idx}-c2" style="font-family:var(--mono); color:var(--accent);">${d.c2.isSalado ? 'DESC' : fmt(t2)}/40</span></summary>
+          <div class="details-body">
+             <div style="display:flex; justify-content:space-between; align-items:center; background:#FEF2F2; color:#B91C1C; padding:12px 16px; border:1px solid #F87171; border-radius:6px; margin-bottom:16px; font-weight:700; font-size:13px;">
+              <span>Descalificar (Afrenta Salada)</span>
+              <input type="checkbox" ${d.c2.isSalado ? 'checked' : ''} onchange="toggleSalado(${idx}, this.checked)" style="width:18px;height:18px;margin:0;">
+            </div>
+            <div style="opacity: ${d.c2.isSalado ? '0.3' : '1'}; pointer-events: ${d.c2.isSalado ? 'none' : 'auto'};">
+              <input type="text" placeholder="Sabor elegido (ej. Pistacho)..." value="${esc(d.c2.flavor)}" oninput="upd(${idx},'c2','flavor',this.value)">
+              ${renderPhotos(idx, 'c2', d.c2)}
+              <div class="score-row">
+                ${rangeInput(idx,'c2','s1','Look/Textura',d.c2.s1)}
+                ${rangeInput(idx,'c2','s2','Calidad Relleno',d.c2.s2)}
+                ${rangeInput(idx,'c2','s3','Cantidad Relleno',d.c2.s3)}
+                ${rangeInput(idx,'c2','s4','Sabor Global',d.c2.s4)}
+              </div>
+              <textarea placeholder="Crítica técnica..." oninput="upd(${idx},'c2','critique',this.value)"></textarea>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+                <div>
+                  <input type="number" step="0.01" placeholder="Precio $" value="${esc(d.c2.price)}" oninput="upd(${idx},'c2','price',this.value); document.getElementById('pbadge-${idx}-c2').innerHTML=getPriceBadgeHTML(this.value, '${zone}')">
+                  <div id="pbadge-${idx}-c2">${getPriceBadgeHTML(d.c2.price, zone)}</div>
+                </div>
+                <select onchange="upd(${idx},'c2','again',this.value)">
+                  <option value="">¿Volvería?</option>
+                  <option value="Sí" ${d.c2.again==='Sí'?'selected':''}>Sí</option>
+                  <option value="No" ${d.c2.again==='No'?'selected':''}>No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- CATEGORIA 3 -->
+        <details>
+          <summary>III. Novelty Item <span id="sum-${idx}-c3" style="font-family:var(--mono); color:var(--accent);">${fmt(t3)}/40</span></summary>
+          <div class="details-body">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#F3F4F6; padding:12px 16px; border:1px solid var(--border); border-radius:6px; margin-bottom:16px; font-weight:700; font-size:13px;">
+              <span>Sustituir por 2do Relleno</span>
+              <input type="checkbox" ${d.c3.isSubstituted ? 'checked' : ''} onchange="upd(${idx},'c3','isSubstituted',this.checked); renderList();" style="width:18px;height:18px;margin:0;">
+            </div>
+            ${d.c3.isSubstituted ? `<input type="text" placeholder="Motivo de descalificación del Novelty..." value="${esc(d.c3.dq)}" oninput="upd(${idx},'c3','dq',this.value)">` : ''}
+            
+            <input type="text" placeholder="${d.c3.isSubstituted ? 'Sabor 2do Croissant...' : 'Ítem de Autor (ej. NY Roll)...'}" value="${esc(d.c3.item)}" oninput="upd(${idx},'c3','item',this.value)">
+            ${renderPhotos(idx, 'c3', d.c3)}
+            <div class="score-row">
+              ${rangeInput(idx,'c3','s1', d.c3.isSubstituted ? 'Look/Textura' : 'Calidad Masa', d.c3.s1)}
+              ${rangeInput(idx,'c3','s2', d.c3.isSubstituted ? 'Calidad Relleno' : 'Materiales', d.c3.s2)}
+              ${rangeInput(idx,'c3','s3', d.c3.isSubstituted ? 'Cantidad Relleno' : 'Relleno', d.c3.s3)}
+              ${rangeInput(idx,'c3','s4', d.c3.isSubstituted ? 'Sabor Global' : 'Sabor Distintivo', d.c3.s4)}
+            </div>
+            <textarea placeholder="Crítica detallada..." oninput="upd(${idx},'c3','critique',this.value)"></textarea>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <div>
+                <input type="number" step="0.01" placeholder="Precio $ (Máx $4)" value="${esc(d.c3.price)}" oninput="upd(${idx},'c3','price',this.value); document.getElementById('pbadge-${idx}-c3').innerHTML=getPriceBadgeHTML(this.value, '${zone}')">
+                <div id="pbadge-${idx}-c3">${getPriceBadgeHTML(d.c3.price, zone)}</div>
+              </div>
+              <select onchange="upd(${idx},'c3','again',this.value)">
+                <option value="">¿Volvería?</option>
+                <option value="Sí" ${d.c3.again==='Sí'?'selected':''}>Sí</option>
+                <option value="No" ${d.c3.again==='No'?'selected':''}>No</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <button class="btn" style="margin-top:20px;" onclick="launchVeredicto(${idx})">PROCESAR VEREDICTO & STORY</button>
+      </div>` : ""}
+    </div>`);
+  });
+  container.innerHTML = parts.length ? parts.join("") : `<div style="text-align:center; padding:40px; color:var(--ink-light);">Sin resultados.</div>`;
+}
+
+function toggleCard(idx) {
+  openCardId = openCardId === idx ? null : idx;
+  renderList();
+  if (openCardId !== null) {
+    setTimeout(() => {
+      const el = document.getElementById(`card-${idx}`);
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: "smooth" });
+    }, 50);
+  }
+}
+
+function touch(idx) {
+  dbData[idx].updatedAt = Date.now();
+  saveLocal();
+}
+
+function upd(idx, cat, field, val) {
+  if (!field) dbData[idx][cat] = val;
+  else dbData[idx][cat][field] = val;
+  touch(idx);
+}
+
+// Fix Slider Input - Live update text + DB + Header summary
+function updScore(input, idx, cat, key) {
+  let v = input.value;
+  // Update local display immediately
+  document.getElementById(`val-${idx}-${cat}-${key}`).textContent = v;
+  dbData[idx][cat][key] = v;
+  
+  // Update Accordion Header visually
+  const isSalado = cat === "c2" && dbData[idx].c2.isSalado;
+  const tot = calcTotal(dbData[idx][cat], isSalado);
+  const sumEl = document.getElementById(`sum-${idx}-${cat}`);
+  if(sumEl) sumEl.textContent = `${fmt(tot)}/40`;
+  
+  touch(idx);
+}
+
+function toggleMargarina(idx, checked) {
+  dbData[idx].c1.isMargarina = checked;
+  if (checked && parseFloat(dbData[idx].c1.s2) > 4) dbData[idx].c1.s2 = "4";
+  touch(idx);
+  renderList();
+}
+
+function toggleSalado(idx, checked) {
+  dbData[idx].c2.isSalado = checked;
+  if (checked) {
+    dbData[idx].c2.s1 = "0"; dbData[idx].c2.s2 = "0"; dbData[idx].c2.s3 = "0"; dbData[idx].c2.s4 = "0";
+  }
+  touch(idx);
+  renderList();
+}
+
+function handlePhoto(e, idx, cat, pKey) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxW = 900;
+      const scale = img.width > maxW ? maxW / img.width : 1;
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      dbData[idx][cat][pKey] = canvas.toDataURL("image/jpeg", 0.75);
+      touch(idx);
+      renderList();
+      toast("Fotografía guardada");
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(e, idx, cat, pKey) {
+  e.preventDefault(); e.stopPropagation();
+  if (!confirm("¿Eliminar fotografía?")) return;
+  dbData[idx][cat][pKey] = "";
+  touch(idx);
+  renderList();
+}
+
+// Side-by-Side Comparison
+function populateCompareSelects() {
+  const sel1 = document.getElementById("comp-sel-1");
+  const sel2 = document.getElementById("comp-sel-2");
+  if (!sel1 || !sel2) return;
+  sel1.innerHTML = ""; sel2.innerHTML = "";
+  BAKERIES.forEach((b, idx) => {
+    sel1.innerHTML += `<option value="${idx}">${idx+1}. ${b.name}</option>`;
+    sel2.innerHTML += `<option value="${idx}" ${idx===1?'selected':''}>${idx+1}. ${b.name}</option>`;
+  });
+  renderComparison();
+}
+
+function buildRadarSVG(d1, d2) {
+  const getPts = c => {
+    const vals = [parseFloat(c.s1)||0, parseFloat(c.s2)||0, parseFloat(c.s3)||0, parseFloat(c.s4)||0];
+    const angles = [-Math.PI/2, 0, Math.PI/2, Math.PI];
+    return vals.map((v, i) => {
+      const r = (v / 10) * 80;
+      const x = 120 + r * Math.cos(angles[i]);
+      const y = 120 + r * Math.sin(angles[i]);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+  };
+  return `
+  <svg viewBox="0 0 240 240" style="width:100%; max-width:240px;">
+    <circle cx="120" cy="120" r="80" fill="none" stroke="#E5E5E5" stroke-dasharray="4 4"/>
+    <circle cx="120" cy="120" r="40" fill="none" stroke="#E5E5E5"/>
+    <line x1="120" y1="40" x2="120" y2="200" stroke="#E5E5E5"/>
+    <line x1="40" y1="120" x2="200" y2="120" stroke="#E5E5E5"/>
+    <polygon points="${getPts(d1.c1)}" fill="rgba(217, 119, 6, 0.2)" stroke="#D97706" stroke-width="2.5"/>
+    <polygon points="${getPts(d2.c1)}" fill="rgba(31, 41, 55, 0.2)" stroke="#1F2937" stroke-width="2.5"/>
+    <text x="120" y="25" text-anchor="middle" fill="#57534E" font-size="11" font-weight="800">LOOK</text>
+    <text x="215" y="124" text-anchor="middle" fill="#57534E" font-size="11" font-weight="800">MAT</text>
+    <text x="120" y="220" text-anchor="middle" fill="#57534E" font-size="11" font-weight="800">LAM</text>
+    <text x="25" y="124" text-anchor="middle" fill="#57534E" font-size="11" font-weight="800">SAB</text>
+  </svg>`;
+}
+
+function renderComparison() {
+  const id1 = parseInt(document.getElementById("comp-sel-1").value) || 0;
+  const id2 = parseInt(document.getElementById("comp-sel-2").value) || 1;
+  const box = document.getElementById("compare-results");
+  const d1 = dbData[id1], d2 = dbData[id2];
+  const a1 = getEntryAudit(d1), a2 = getEntryAudit(d2);
+
+  const col = (b, d, a, color) => `
+    <div class="compare-col" style="border-top: 4px solid ${color};">
+      <h4 style="font-size:18px; text-transform:uppercase;">${esc(b.name)}</h4>
+      <div style="font-family:var(--mono); font-size:12px; color:var(--ink-light); margin-bottom:12px;">${esc(b.zone)}</div>
+      ${d.c1.p2 ? `<img src="${d.c1.p2}" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:4px; margin-bottom:12px;">` : `<div style="aspect-ratio:4/3; background:#F3F4F6; display:flex; align-items:center; justify-content:center; color:var(--border); margin-bottom:12px; font-weight:700;">SIN FOTO</div>`}
+      <div style="font-family:var(--mono); font-size:14px;">
+        <div style="margin-bottom:8px; font-size:16px;"><b>SCORE:</b> <span style="color:${color};">${fmt(a.score)}/40</span></div>
+        <div>CLASSIC: ${fmt(calcTotal(d.c1,false))}</div>
+        <div>RELLENO: ${d.c2.isSalado ? 'DESC' : fmt(calcTotal(d.c2,false))}</div>
+        <div>CAT III: ${fmt(calcTotal(d.c3,false))}</div>
+      </div>
+    </div>`;
+
+  box.innerHTML = `
+    <div class="compare-grid">
+      ${col(BAKERIES[id1], d1, a1, "#D97706")}
+      <div class="radar-box">
+        ${buildRadarSVG(d1, d2)}
+      </div>
+      ${col(BAKERIES[id2], d2, a2, "#1F2937")}
+    </div>`;
+}
+
+function setRankMode(btn) {
+  document.querySelectorAll("#rank-category button").forEach(b => b.classList.toggle("active", b === btn));
+  rankMode = btn.dataset.v;
+  renderRanking();
+}
+
+function renderRanking() {
+  const list = document.getElementById("ranking-list");
+  const ranked = BAKERIES.map((bObj, idx) => {
+    const d = dbData[idx];
+    const audit = getEntryAudit(d);
+    let score = 0;
+    if (rankMode === "total") score = audit.score;
+    else if (rankMode === "c1") score = calcTotal(d.c1, false);
+    else if (rankMode === "c2") score = calcTotal(d.c2, d.c2.isSalado);
+    else if (rankMode === "c3") score = calcTotal(d.c3, false);
+    return { name: bObj.name, zone: bObj.zone, idx, score: Math.round(score * 10) / 10, status: audit.status };
+  }).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  if (!ranked.length) {
+    list.innerHTML = `<div style="text-align:center; padding:60px 20px; border:1px dashed var(--border); color:var(--ink-light);">Podio sin datos. Realiza evaluaciones.</div>`;
+    return;
+  }
+
+  list.innerHTML = ranked.map((item, i) => `
+    <div class="rank-row" onclick="jumpToBakery(${item.idx})" style="cursor:pointer;">
+      <div class="r-pos">#${i + 1}</div>
+      <div>
+        <div style="font-weight: 800; text-transform: uppercase; font-size:16px;">${esc(item.name)}</div>
+        <div style="font-family: var(--mono); font-size: 12px; color: var(--ink-light); margin-top: 2px;">${esc(item.zone)}</div>
+      </div>
+      <div class="r-score">${fmt(item.score)}</div>
+    </div>`).join("");
+}
+
+function jumpToBakery(idx) {
+  openCardId = idx;
+  switchTab("eval");
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".nav-link, .mob-tab").forEach(b => {
+    if(b.getAttribute('onclick').includes(`'${tab}'`)) b.classList.add("active");
+    else b.classList.remove("active");
+  });
+  ["home", "eval", "rank", "data"].forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if (t === tab) el.classList.add("active");
+    else el.classList.remove("active");
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (tab === "rank") { populateCompareSelects(); renderRanking(); }
+  if (tab === "eval") renderList();
+}
+
+function launchVeredicto(idx) {
+  const d = dbData[idx];
+  const audit = getEntryAudit(d);
+  if (audit.status === "unvisited") { toast("Faltan datos"); return; }
+
+  document.getElementById("veredicto-title").textContent = BAKERIES[idx].name;
+  document.getElementById("veredicto-score").textContent = `SCORE: ${fmt(audit.score)} / 40.0`;
+  
+  const icon = document.getElementById("veredicto-icon");
+  if (audit.status === "partial") icon.textContent = "⏳";
+  else if (audit.score >= 38) icon.textContent = "👑";
+  else if (audit.score >= 34) icon.textContent = "🥇";
+  else if (audit.score >= 26) icon.textContent = "🥈";
+  else icon.textContent = "🥉";
+
+  document.getElementById("btn-share-story").onclick = () => generateInstagramStory(idx);
+  document.getElementById("veredicto-overlay").style.display = "flex";
+}
+
+function closeVeredicto() { document.getElementById("veredicto-overlay").style.display = "none"; }
+
+function generateInstagramStory(idx) {
+  const d = dbData[idx];
+  const bObj = BAKERIES[idx];
+  const audit = getEntryAudit(d);
+  const canvas = document.getElementById("story-canvas");
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#F9F8F6";
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  ctx.strokeStyle = "#1C1917";
+  ctx.lineWidth = 12;
+  ctx.strokeRect(40, 40, 1000, 1840);
+
+  ctx.fillStyle = "#D97706";
+  ctx.font = "italic 400 52px 'Fraunces', serif";
+  ctx.textAlign = "center";
+  ctx.fillText("CRUST & CRUMB UIO", 540, 160);
+
+  ctx.fillStyle = "#1C1917";
+  ctx.font = "800 72px 'Manrope', sans-serif";
+  ctx.fillText(bObj.name.toUpperCase(), 540, 260);
+
+  ctx.fillStyle = "#57534E";
+  ctx.font = "700 32px 'JetBrains Mono', monospace";
+  ctx.fillText(bObj.zone.toUpperCase(), 540, 320);
+
+  const imgData = d.c1.p1 || d.c1.p2 || d.c2.p1;
+  const finishCard = () => {
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#1C1917";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.rect(140, 1300, 800, 340);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = "#1C1917";
+    ctx.font = "italic 400 96px 'Fraunces', serif";
+    ctx.fillText(`${fmt(audit.score)} / 40.0`, 540, 1440);
+
+    ctx.fillStyle = "#D97706";
+    ctx.font = "700 28px 'JetBrains Mono', monospace";
+    ctx.fillText(`CLASSIC: ${fmt(calcTotal(d.c1,false))} | RELL: ${d.c2.isSalado ? 'DESC' : fmt(calcTotal(d.c2,false))} | CAT III: ${fmt(calcTotal(d.c3,false))}`, 540, 1530);
+
+    let st = "AUDITORÍA PARCIAL";
+    if (audit.status === "complete") {
+      if (audit.score >= 38) st = "RANGO: EXCEPCIONAL";
+      else if (audit.score >= 34) st = "RANGO: ALTA CALIDAD";
+      else if (audit.score >= 26) st = "RANGO: ESTÁNDAR";
+      else st = "RANGO: NO RECOMENDADO";
+    }
+    
+    ctx.fillStyle = "#57534E";
+    ctx.font = "800 36px 'Manrope', sans-serif";
+    ctx.fillText(st, 540, 1600);
+
+    const a = document.createElement("a");
+    a.download = `Story-${bObj.name.replace(/\s+/g,'-')}.png`;
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+    toast("Story Descargada");
+  };
+
+  if (imgData) {
+    const im = new Image();
+    im.onload = () => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(140, 420, 800, 800);
+      ctx.clip();
+      ctx.drawImage(im, 140, 420, 800, 800);
+      ctx.restore();
+      ctx.strokeStyle = "#1C1917";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(140, 420, 800, 800);
+      finishCard();
+    };
+    im.src = imgData;
+  } else {
+    ctx.fillStyle = "#E7E0D8";
+    ctx.fillRect(140, 420, 800, 800);
+    ctx.strokeRect(140, 420, 800, 800);
+    finishCard();
+  }
+}
+
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(dbData)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `crust-crumb-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = async ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      BAKERIES.forEach((_, i) => { dbData[i] = normalize(parsed[i]); });
+      await saveLocal();
+      renderList();
+      toast("Respaldo restaurado");
+    } catch { toast("Archivo inválido"); }
+  };
+  r.readAsText(file);
+}
+
+async function init() {
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  const local = await loadLocal();
+  BAKERIES.forEach((_, i) => dbData[i] = normalize(local[i]));
+  renderList();
+}
+
+init();
+</script>
+</body>
+</html>
