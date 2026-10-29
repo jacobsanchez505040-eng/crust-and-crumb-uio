@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Crust&Crumb">
+<meta name="theme-color" content="#f4ede1">
+<title>Crust & Crumb UIO — Registro Técnico del Croissant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..800,50;1,9..144,400..700,50&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4ede1;
+    --paper-deep: #ebe1cf;
+    --card: #fbf7f0;
+    --ink: #2a1d14;
+    --ink-soft: #5c4a3c;
+    --muted: #8f7d6c;
+    --rule: #dccfbb;
+    --rule-soft: #e7dccb;
+    --butter: #c2852b;
+    --butter-deep: #9a6418;
+    --butter-wash: #f1e0bf;
+    --crust: #7a3b1d;
+    --sage: #5d7a55;
+    --sage-wash: #e2e8d6;
+    --alert: #b2482a;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Manrope", -apple-system, sans-serif;
+    --radius: 16px;
+    --shadow: 0 1px 0 rgba(42,29,20,.04), 0 8px 24px -12px rgba(42,29,20,.18);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0; color: var(--ink); font-family: var(--sans); font-size: 15px;
+    background:
+      radial-gradient(1200px 500px at 110% -10%, rgba(194,133,43,.16), transparent 60%),
+      radial-gradient(900px 400px at -20% 110%, rgba(122,59,29,.08), transparent 60%),
+      var(--paper);
+    min-height: 100vh;
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .35; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  svg.i { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(244,237,225,.88); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--rule);
+    padding: calc(12px + env(safe-area-inset-top)) 20px 14px;
+  }
+  .head-inner { max-width: 640px; margin: 0 auto; }
+  .eyebrow { font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  h1 { margin: 4px 0 10px; font-family: var(--serif); font-weight: 600; font-size: 29px; letter-spacing: -.02em; line-height: 1; }
+  h1 em { font-style: italic; font-weight: 500; color: var(--butter-deep); }
+  .progress-row { display: flex; align-items: center; gap: 12px; }
+  .progress-track { flex: 1; height: 4px; border-radius: 4px; background: var(--rule-soft); overflow: hidden; }
+  .progress-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--butter), var(--crust)); transform-origin: left; transform: scaleX(0); transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .progress-txt { font-size: 12px; font-weight: 700; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .sync-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; letter-spacing: .04em; text-transform: none; font-weight: 700; padding: 4px 9px; border-radius: 99px; background: var(--card); border: 1px solid var(--rule); color: var(--ink-soft); cursor: pointer; }
+  .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 0 3px var(--sage-wash); }
+  .sync-pill[data-state="saving"] .sync-dot { background: var(--butter); box-shadow: 0 0 0 3px var(--butter-wash); animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+
+  .container { padding: 18px 16px; max-width: 640px; margin: 0 auto; }
+  .section-title { font-family: var(--serif); font-size: 22px; font-weight: 600; margin: 6px 4px 14px; letter-spacing: -.01em; }
+  .section-title small { display: block; font-family: var(--sans); font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: 0; margin-top: 3px; }
+
+  .manifesto-block { background: rgba(251,247,240,.9); padding: 16px; border-radius: 14px; border: 1px solid var(--rule); margin-top: 14px; }
+  .manifesto-block h4 { margin: 0 0 8px; font-family: var(--serif); font-size: 18px; color: var(--crust); display: flex; align-items: center; gap: 8px; }
+  .manifesto-copy { font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); text-align: justify; margin: 0 0 12px; }
+  .manifesto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .manifesto-photo-card { position: relative; height: 150px; background: var(--paper-deep); border-radius: 12px; overflow: hidden; border: 1px solid var(--rule); box-shadow: 0 4px 12px rgba(42,29,20,.08); }
+  .manifesto-photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .manifesto-caption { position: absolute; bottom: 6px; left: 6px; right: 6px; background: rgba(42,29,20,.78); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); color: #fbf7f0; font-size: 10.5px; font-weight: 700; padding: 4px 8px; border-radius: 8px; text-align: center; }
+
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 10px; }
+  .search { flex: 1; position: relative; }
+  .search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+  .search input { padding-left: 38px !important; }
+  
+  .segmented { display: flex; background: var(--paper-deep); border-radius: 12px; padding: 3px; gap: 2px; margin-bottom: 10px; overflow-x: auto; }
+  .segmented button { flex: 1; border: 0; background: transparent; padding: 8px 6px; border-radius: 9px; font: 600 12px var(--sans); color: var(--ink-soft); cursor: pointer; white-space: nowrap; transition: background .2s, color .2s; }
+  .segmented button.active { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(42,29,20,.12); }
+
+  input[type="text"], input[type="number"], input[type="date"], textarea, select {
+    width: 100%; background: var(--card); border: 1px solid var(--rule); color: var(--ink);
+    padding: 11px 12px; border-radius: 11px; font: 500 15px var(--sans); outline: none; -webkit-appearance: none; appearance: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%238f7d6c' stroke-width='1.7'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+  input:focus, textarea:focus, select:focus { border-color: var(--butter); box-shadow: 0 0 0 3px var(--butter-wash); }
+  input::placeholder, textarea::placeholder { color: #b3a392; }
+  textarea { resize: vertical; min-height: 78px; line-height: 1.45; }
+
+  .bakery-card { background: var(--card); border: 1px solid var(--rule-soft); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; }
+  .bakery-card.open { box-shadow: 0 1px 0 rgba(42,29,20,.04), 0 18px 40px -18px rgba(42,29,20,.35); }
+  .bakery-header { padding: 14px 16px; display: grid; grid-template-columns: 40px 1fr auto; gap: 10px; align-items: center; cursor: pointer; }
+  .bakery-header:active { background: rgba(194,133,43,.05); }
+  .num { font-family: var(--serif); font-size: 26px; font-weight: 500; font-style: italic; color: var(--butter); line-height: 1; text-align: right; }
+  .bakery-card.done .num { color: var(--crust); }
+  .bakery-name { font-weight: 700; font-size: 15.5px; letter-spacing: -.005em; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .zone-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: var(--paper-deep); color: var(--ink-soft); }
+  .maps-link { font-size: 11px; font-weight: 700; color: var(--butter-deep); text-decoration: none; padding: 2px 6px; border-radius: 6px; background: var(--butter-wash); display: inline-flex; align-items: center; gap: 3px; }
+  .bakery-meta { font-size: 12px; color: var(--muted); margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .bakery-meta b { color: var(--ink-soft); font-weight: 700; }
+  .chev { color: var(--muted); transition: transform .25s; }
+  .bakery-card.open .chev { transform: rotate(180deg); }
+  .tag { font-size: 10.5px; padding: 4px 8px; border-radius: 99px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: var(--paper-deep); color: var(--muted); }
+  .tag.done { background: var(--sage-wash); color: var(--sage); }
+  .tag.partial { background: var(--butter-wash); color: var(--butter-deep); }
+  .right { display: flex; align-items: center; gap: 8px; }
+
+  .bakery-body { display: none; padding: 4px 16px 18px; border-top: 1px dashed var(--rule); }
+  .bakery-card.open .bakery-body { display: block; animation: rise .35s cubic-bezier(.2,.8,.2,1); }
+
+  .field-label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; display: flex; align-items: center; gap: 6px; }
+
+  .cat-block { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rule-soft); }
+  .cat-block:first-of-type { border-top: 0; }
+  .cat-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
+  .cat-kicker { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--butter-deep); font-weight: 800; }
+  .cat-name { font-family: var(--serif); font-size: 20px; font-weight: 600; letter-spacing: -.01em; margin-top: 2px; }
+  .score-pill { font-family: var(--serif); font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1; white-space: nowrap; }
+  .score-pill small { font-family: var(--sans); font-size: 12px; color: var(--muted); font-weight: 600; }
+
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .score-item { background: var(--paper); padding: 8px 8px 8px 12px; border-radius: 12px; border: 1px solid var(--rule-soft); display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+  .score-item span { font-size: 12px; color: var(--ink-soft); font-weight: 600; line-height: 1.2; }
+  .score-item input { width: 56px; text-align: center; font-weight: 800; padding: 8px 4px; font-variant-numeric: tabular-nums; }
+
+  .sabor-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+  .chip { background: var(--paper); border: 1px solid var(--rule); padding: 6px 11px; border-radius: 99px; font-family: var(--sans); font-weight: 600; font-size: 12px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }
+  .chip.selected { background: var(--butter); color: #fff; border-color: var(--butter-deep); box-shadow: 0 2px 8px rgba(194,133,43,.3); }
+
+  .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--paper); border: 1px solid var(--rule-soft); padding: 9px 12px; border-radius: 11px; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+  .switch-row.danger { color: var(--alert); border-color: #ebc6b8; background: #fbf1ed; }
+  .switch-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--crust); cursor: pointer; }
+
+  .badge-context { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 8px; font-size: 11.5px; font-weight: 700; margin-top: 8px; }
+  .badge-premium { background: var(--butter-wash); color: var(--butter-deep); border: 1px solid var(--butter); }
+  .badge-estandar { background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage); }
+  .badge-barato { background: #e2e8d6; color: #3d5a35; border: 1px solid #5d7a55; }
+  .badge-alert { background: #f2d6cb; color: var(--alert); border: 1px solid var(--alert); }
+
+  .metrics-box { background: var(--paper-deep); border-radius: 10px; padding: 10px 12px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 700; }
+
+  .dq-banner { background: #f2d6cb; color: var(--alert); border: 1px solid var(--alert); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; font-weight: 700; margin: 8px 0; }
+  .disabled-wrap { opacity: 0.32; pointer-events: none; filter: grayscale(0.6); }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+
+  .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 10px; }
+  .photo-box { border: 1.5px dashed var(--rule); border-radius: 12px; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; overflow: hidden; background: var(--paper); cursor: pointer; color: var(--muted); transition: border-color .2s; }
+  .photo-box:active { border-color: var(--butter); }
+  .photo-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1; }
+  .photo-box .ph-label { font-size: 11px; font-weight: 700; z-index: 2; text-align: center; padding: 0 6px; }
+  .photo-box.has .ph-label { position: absolute; bottom: 6px; left: 6px; background: rgba(42,29,20,.78); color: #fbf7f0; padding: 3px 8px; border-radius: 99px; font-size: 10px; }
+  .photo-box.has svg { display: none; }
+  .photo-box input { display: none; }
+  .photo-del { position: absolute; top: 6px; right: 6px; z-index: 3; width: 24px; height: 24px; border-radius: 50%; border: none; background: rgba(42,29,20,.78); color: #fff; font-weight: 800; font-size: 14px; cursor: pointer; }
+
+  .btn { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); font: 700 14px var(--sans); cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.gold { background: linear-gradient(135deg, var(--butter), var(--crust)); border: none; color: #fff; box-shadow: 0 4px 12px rgba(122,59,29,.25); }
+  .btn:active { transform: scale(.98); }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+  .btn.share { background: #4a2c1d; color: #fff; border: none; }
+
+  /* Modal de Veredicto */
+  .veredicto-card { position: fixed; inset: 0; background: rgba(42,29,20,.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; }
+  .veredicto-content { background: var(--card); border: 2px solid var(--rule); border-radius: 24px; padding: 26px 20px; text-align: center; max-width: 360px; width: 100%; box-shadow: 0 24px 48px rgba(42,29,20,.4); animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  .veredicto-badge-icon { font-size: 58px; margin-bottom: 8px; display: inline-block; animation: floatIcon 3s ease-in-out infinite; }
+  .veredicto-title { font-family: var(--serif); font-size: 24px; margin: 0 0 6px 0; color: var(--ink); }
+  .veredicto-score { font-family: var(--sans); font-weight: 800; font-size: 15px; color: var(--butter-deep); margin: 0 0 8px 0; }
+  .veredicto-status { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; display: inline-block; margin-bottom: 14px; }
+  .decor-top5 { border-color: #c2852b; background: linear-gradient(to bottom, #fffaf0, #fbf7f0); box-shadow: 0 0 25px rgba(194,133,43,0.4); }
+  .decor-excelente { border-color: var(--butter); }
+  .decor-buena { border-color: var(--sage); }
+  .decor-mediocre { border-color: var(--rule); }
+  .decor-mala { border-color: var(--alert); }
+  .decor-partial { border-color: #d89f48; background: #fffcf5; }
+  @keyframes popIn { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+  /* Comparador Lado a Lado */
+  .compare-box { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+  .compare-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .compare-col { background: var(--paper); border: 1px solid var(--rule-soft); border-radius: 12px; padding: 10px; font-size: 12px; }
+  .compare-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; margin: 6px 0; background: var(--paper-deep); display: block; }
+
+  /* Ranking */
+  .podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 8px; align-items: end; margin: 8px 0 18px; }
+  .pod { background: var(--card); border: 1px solid var(--rule-soft); border-radius: var(--radius); padding: 14px 10px 12px; text-align: center; box-shadow: var(--shadow); position: relative; cursor: pointer; }
+  .pod.first { background: linear-gradient(170deg, #fff8ea, var(--butter-wash)); border-color: #e4c993; padding-top: 22px; }
+  .pod .medal { font-family: var(--serif); font-style: italic; font-size: 34px; font-weight: 600; line-height: 1; color: var(--butter); }
+  .pod.first .medal { font-size: 46px; color: var(--crust); }
+  .pod .pname { font-weight: 800; font-size: 13px; margin-top: 8px; line-height: 1.2; min-height: 2.4em; display: flex; align-items: center; justify-content: center; }
+  .pod .pscore { font-family: var(--serif); font-size: 20px; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .pod .pscore small { font-family: var(--sans); font-size: 11px; color: var(--muted); }
+  .pod.empty { opacity: .45; box-shadow: none; background: transparent; border-style: dashed; cursor: default; }
+
+  .rank-card { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center; padding: 12px 4px; border-bottom: 1px solid var(--rule); cursor: pointer; }
+  .rank-pos { font-family: var(--serif); font-size: 20px; font-style: italic; color: var(--butter-deep); text-align: right; }
+  .rank-name { font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .bar { height: 3px; border-radius: 3px; background: var(--rule-soft); margin-top: 7px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; background: var(--butter); transform-origin: left; }
+  .rank-score { font-family: var(--serif); font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+  .rank-score small { font-family: var(--sans); font-size: 11px; color: var(--muted); }
+
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
+  .empty-state .big { font-family: var(--serif); font-size: 22px; color: var(--ink-soft); font-style: italic; margin: 12px 0 6px; }
+
+  .panel { background: var(--card); border: 1px solid var(--rule-soft); border-radius: var(--radius); padding: 20px 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .panel h3 { font-family: var(--serif); font-weight: 600; font-size: 21px; margin: 0 0 4px; }
+  .panel p.lead { color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; margin: 0 0 12px; }
+  
+  .protocol-text { font-size: 13.5px; color: var(--ink-soft); line-height: 1.65; display: flex; flex-direction: column; gap: 12px; }
+  .protocol-text h4 { font-family: var(--serif); font-size: 17px; color: var(--ink); margin: 10px 0 4px; font-weight: 600; }
+  .protocol-text ul, .protocol-text ol { margin: 0; padding-left: 18px; }
+
+  .nav-tabs { position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: center; padding: 0 16px calc(12px + env(safe-area-inset-bottom)); pointer-events: none; }
+  .nav-inner { pointer-events: auto; display: flex; gap: 4px; background: rgba(42,29,20,.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 6px; border-radius: 22px; box-shadow: 0 14px 34px -10px rgba(42,29,20,.55); width: 100%; max-width: 420px; }
+  .tab-btn { flex: 1; background: none; border: none; color: #b9a893; padding: 9px 4px; border-radius: 16px; font: 700 11.5px var(--sans); display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+  .tab-btn.active { background: var(--paper); color: var(--ink); }
+
+  .toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: var(--paper); padding: 11px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; z-index: 250; transition: opacity .25s, transform .25s; pointer-events: none; max-width: 90vw; text-align: center; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .stagger > * { animation: rise .45s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M16 5h3v2a3 3 0 0 1-3 3M8 5H5v2a3 3 0 0 0 3 3M12 13v4M8 20h8M9.5 17h5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2V5Z"/><path d="M4 20a2 2 0 0 0 2 2h13v-4"/><path d="M9 7h6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 15V4m0 0 4 4m-4-4L8 8M5 20h14"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4M12 17v.01"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
+</svg>
+
+<header>
+  <div class="head-inner">
+    <div class="eyebrow">
+      <span>Quito — Temporada Noviembre</span>
+      <button class="sync-pill" id="sync-pill" data-state="synced" onclick="switchTab('rules')">
+        <span class="sync-dot"></span><span id="save-status">Borrador Seguro</span>
+      </button>
+    </div>
+    <h1>Crust &amp; Crumb <em>UIO</em></h1>
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <span class="progress-txt" id="progress-txt">0 / 36 evaluados</span>
+    </div>
+  </div>
+</header>
+
+<!-- TAB 0: INICIO -->
+<main id="tab-home" class="container">
+  <section class="panel" style="background: linear-gradient(170deg, var(--card), var(--butter-wash)); border-color: #e4c993;">
+    <h3 style="font-size: 25px; font-family: var(--serif);">✨ El Estándar del Croissant Perfecto</h3>
+    <p class="lead" style="margin-top: 8px; font-size: 14px; line-height: 1.6; color: var(--ink);">
+      La guía técnica visual y el manifiesto riguroso que utilizo para medir la maestría de cada taller y pastelería en Quito y sus valles.
+    </p>
+
+    <div class="manifesto-block">
+      <h4><span>🥐</span> 1. El Croissant Puro (Tradición Francesa)</h4>
+      <p class="manifesto-copy">
+        La prueba definitiva de un maestro panadero. Ligero como el aire y crujiente al extremo. Su corteza debe lucir vueltas simétricas bien definidas con un tono dorado uniforme. Al morderlo, debe romperse en mil pedazos de hojaldre volador, liberando un aroma profundo a mantequilla real de alta calidad. Su estructura interior debe ser un panal abierto y translúcido.
+      </p>
+      <div class="manifesto-grid">
+        <div class="manifesto-photo-card">
+          <img src="assets/puro-exterior.png" alt="Foto 1: Exterior Dorado">
+          <span class="manifesto-caption">Foto 1: Exterior Dorado</span>
+        </div>
+        <div class="manifesto-photo-card">
+          <img src="assets/puro-interior.png" alt="Foto 2: Alveolado Abierto">
+          <span class="manifesto-caption">Foto 2: Alveolado Abierto</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="manifesto-block">
+      <h4><span>🍫</span> 2. El Croissant Relleno Dulce</h4>
+      <p class="manifesto-copy">
+        Armonía entre pastelería fina y hojaldre técnico. Jamás debe sacrificar la crocancia del hojaldre base por culpa de la humedad de su contenido. Decoración elegante y relleno de alta gama con la abundancia justa para acompañar cada bocado sin saturar ni opacar la masa.
+      </p>
+      <div class="manifesto-grid">
+        <div class="manifesto-photo-card">
+          <img src="assets/relleno-exterior.png" alt="Foto 1: Textura Exterior">
+          <span class="manifesto-caption">Foto 1: Textura Exterior</span>
+        </div>
+        <div class="manifesto-photo-card">
+          <img src="assets/relleno-interior.png" alt="Foto 2: Equilibrio de Crema">
+          <span class="manifesto-caption">Foto 2: Equilibrio de Crema</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3>Protocolo Oficial de Evaluación</h3>
+    <div class="protocol-text">
+      <h4>Reglas Fundamentales</h4>
+      <ol>
+        <li><b>Vigencia:</b> Visitas obligatorias a partir del 9 de noviembre de 2026. Se registra fecha exacta.</li>
+        <li><b>Fotografía Obligatoria:</b> 2 fotos por ítem (Look exterior antes de morder + Estructura/Interior expuesto).</li>
+        <li><b>Prohibición Absoluta:</b> Croissants salados quedan descalificados (0/40) por ofensa a la tradición francesa.</li>
+        <li><b>Límite Novelty:</b> Máximo $4.00 (ideal $3.50). Si se supera, exige justificación obligatoria o sustitución por 2do croissant relleno.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<!-- TAB 1: EVALUACIÓN -->
+<main id="tab-eval" class="container" style="display:none;">
+  <div class="filter-bar">
+    <label class="search"><svg class="i"><use href="#i-search"/></svg><input type="text" id="search" placeholder="Buscar panadería o calle…" oninput="renderList()"></label>
+  </div>
+  
+  <!-- Filtro por Sectores de Quito -->
+  <div class="segmented" id="filter-sector">
+    <button class="active" data-sec="all" onclick="setSector(this)">Todos</button>
+    <button data-sec="Norte / Centro" onclick="setSector(this)">Norte / Centro</button>
+    <button data-sec="Cumbayá / Tumbaco" onclick="setSector(this)">Cumbayá / Tumbaco</button>
+    <button data-sec="Valle de los Chillos" onclick="setSector(this)">Los Chillos</button>
+  </div>
+
+  <div class="segmented" id="filter-status">
+    <button class="active" data-v="all" onclick="setFilter(this)">Todas (36)</button>
+    <button data-v="pending" onclick="setFilter(this)">Pendientes</button>
+    <button data-v="done" onclick="setFilter(this)">Evaluadas</button>
+  </div>
+
+  <div id="bakery-list"></div>
+</main>
+
+<!-- TAB 2: RANKING Y COMPARADOR -->
+<main id="tab-rank" class="container" style="display:none;">
+  <!-- Módulo Comparador Lado a Lado -->
+  <section class="compare-box">
+    <h3 style="font-family:var(--serif); font-size:16px; margin:0 0 8px; color:var(--ink);">⚔️ Comparador Directo Lado a Lado</h3>
+    <div class="compare-selects">
+      <select id="comp-sel-1" onchange="renderComparison()"></select>
+      <select id="comp-sel-2" onchange="renderComparison()"></select>
+    </div>
+    <div id="compare-results"></div>
+  </section>
+
+  <h2 class="section-title">Clasificación Oficial<small id="rank-sub">Promedio ponderado sobre 40 puntos</small></h2>
+  <div class="segmented" id="rank-category">
+    <button class="active" data-v="total" onclick="setRankMode(this)">General</button>
+    <button data-v="c1" onclick="setRankMode(this)">Puro</button>
+    <button data-v="c2" onclick="setRankMode(this)">Relleno</button>
+    <button data-v="c3" onclick="setRankMode(this)">Novelty</button>
+  </div>
+  <div id="ranking-list"></div>
+</main>
+
+<!-- TAB 3: RESPALDO -->
+<main id="tab-rules" class="container" style="display:none;">
+  <section class="panel">
+    <h3>Persistencia y Respaldo</h3>
+    <p class="lead">Las evaluaciones y fotografías se guardan localmente en la memoria IndexedDB de tu iPhone.</p>
+    <button class="btn gold" onclick="exportBackup()"><svg class="i"><use href="#i-down"/></svg>Descargar respaldo completo (JSON + Fotos)</button>
+    <label class="btn ghost" style="margin-top:10px;"><svg class="i"><use href="#i-up"/></svg>Restaurar respaldo JSON
+      <input type="file" accept=".json,application/json" style="display:none;" onchange="importBackup(event)">
+    </label>
+  </section>
+</main>
+
+<!-- MODAL DE VEREDICTO -->
+<div class="veredicto-card" id="veredicto-overlay" onclick="closeVeredicto()">
+  <div class="veredicto-content" id="veredicto-box" onclick="event.stopPropagation()">
+    <div id="veredicto-icon-wrapper"></div>
+    <h3 class="veredicto-title" id="veredicto-title"></h3>
+    <p class="veredicto-score" id="veredicto-score"></p>
+    <div id="veredicto-status-wrap"></div>
+    <p id="veredicto-bakery" style="font-size:13px; color:var(--ink-soft); margin:0 0 16px;"></p>
+    <button class="btn gold" id="btn-share-story" style="margin-bottom:8px;"><svg class="i"><use href="#i-share"/></svg>Exportar para Instagram Story</button>
+    <button class="btn ghost" onclick="closeVeredicto()">Cerrar</button>
+  </div>
+</div>
+
+<nav class="nav-tabs">
+  <div class="nav-inner">
+    <button class="tab-btn active" data-tab="home" onclick="switchTab('home')"><svg class="i"><use href="#i-home"/></svg>Inicio</button>
+    <button class="tab-btn" data-tab="eval" onclick="switchTab('eval')"><svg class="i"><use href="#i-pen"/></svg>Evaluar</button>
+    <button class="tab-btn" data-tab="rank" onclick="switchTab('rank')"><svg class="i"><use href="#i-trophy"/></svg>Ranking</button>
+    <button class="tab-btn" data-tab="rules" onclick="switchTab('rules')"><svg class="i"><use href="#i-book"/></svg>Respaldo</button>
+  </div>
+</nav>
+
+<canvas id="story-canvas" width="1080" height="1920" style="display:none;"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+const BAKERIES = [
+  { name: "Panificadora Ambato", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "L'Artisan", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "Fankor", zone: "Orellana", sector: "Norte / Centro" },
+  { name: "Europa Cafe", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Hansel y Gretel", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Sweet and Coffee", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Cyrano", zone: "González Suárez", sector: "Norte / Centro" },
+  { name: "Panasutra", zone: "La Pradera", sector: "Norte / Centro" },
+  { name: "Le Pan de Jerome", zone: "La Coruña", sector: "Norte / Centro" },
+  { name: "Pía Pastelería", zone: "La Pradera", sector: "Norte / Centro" },
+  { name: "Panecu", zone: "La Floresta", sector: "Norte / Centro" },
+  { name: "Bakery Alameda", zone: "La Mariscal", sector: "Norte / Centro" },
+  { name: "El Pan de Martín", zone: "La Vicentina", sector: "Norte / Centro" },
+  { name: "Bole", zone: "La Carolina", sector: "Norte / Centro" },
+  { name: "Chatelain", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "227 Resto-Café", zone: "La Carolina", sector: "Norte / Centro" },
+  { name: "Cyril", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "Uko Bread", zone: "Rep. El Salvador", sector: "Norte / Centro" },
+  { name: "Lecroissant", zone: "6 de Diciembre", sector: "Norte / Centro" },
+  { name: "Croissant Lovers", zone: "Iñaquito", sector: "Norte / Centro" },
+  { name: "Miam Miam", zone: "El Batán", sector: "Norte / Centro" },
+  { name: "Koke", zone: "Jipijapa", sector: "Norte / Centro" },
+  { name: "Panpe", zone: "Río Coca", sector: "Norte / Centro" },
+  { name: "Akao", zone: "El Bosque", sector: "Norte / Centro" },
+  { name: "Auqui Panera", zone: "Guayasamín", sector: "Cumbayá / Tumbaco" },
+  { name: "Corteza (UDLA)", zone: "Nayón", sector: "Cumbayá / Tumbaco" },
+  { name: "Oh Caffe", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "Il Pasticcino", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "Ambrosia (USFQ)", zone: "Cumbayá", sector: "Cumbayá / Tumbaco" },
+  { name: "La Bakery (UIDE)", zone: "Simón Bolívar", sector: "Valle de los Chillos" },
+  { name: "Bruning Deli", zone: "Conocoto", sector: "Valle de los Chillos" },
+  { name: "Aroma", zone: "Conocoto", sector: "Valle de los Chillos" },
+  { name: "Atelier Sucre", zone: "La Armenia", sector: "Valle de los Chillos" },
+  { name: "La Panetteria", zone: "Valle de los Chillos", sector: "Valle de los Chillos" },
+  { name: "Chuta Madre", zone: "Centro", sector: "Norte / Centro" },
+  { name: "La Juana", zone: "Sur", sector: "Norte / Centro" }
+];
+
+const FLAVOR_CHIPS = ["🍫 Chocolate", "🟢 Pistacho", "🪵 Almendras", "🍓 Frutos Rojos", "🍋 Lemon Cheesecake", "🫐 Mora", "✨ Otro..."];
+const CATS = ["c1", "c2", "c3"];
+
+let dbData = {};
+let openCardId = null;
+let filterMode = "all";
+let filterSector = "all";
+let rankMode = "total";
+let activeStoryIdx = null;
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const icon = id => `<svg class="i"><use href="#i-${id}"/></svg>`;
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+// ---------- IndexedDB ----------
+const dbPromise = new Promise((resolve, reject) => {
+  const req = indexedDB.open("CrustCrumbUIO_DB_v2", 1);
+  req.onupgradeneeded = e => e.target.result.createObjectStore("store");
+  req.onsuccess = e => resolve(e.target.result);
+  req.onerror = e => reject(e);
+});
+
+async function loadLocal() {
+  const db = await dbPromise;
+  return new Promise(res => {
+    const req = db.transaction("store", "readonly").objectStore("store").get("data");
+    req.onsuccess = () => res(req.result || {});
+    req.onerror = () => res({});
+  });
+}
+
+let saveIndicatorTimer = null;
+async function saveLocal() {
+  const pill = document.getElementById("sync-pill");
+  const txt = document.getElementById("save-status");
+  pill.dataset.state = "saving";
+  txt.textContent = "Guardando…";
+  const db = await dbPromise;
+  return new Promise(res => {
+    const tx = db.transaction("store", "readwrite");
+    tx.objectStore("store").put(dbData, "data");
+    tx.oncomplete = () => {
+      clearTimeout(saveIndicatorTimer);
+      saveIndicatorTimer = setTimeout(() => {
+        pill.dataset.state = "synced";
+        txt.textContent = "Borrador Seguro";
+      }, 350);
+      res();
+    };
+    tx.onerror = res;
+  });
+}
+
+function createEmptyEntry() {
+  return {
+    date: "", updatedAt: 0,
+    c1: { isMargarina: false, s1:"", s2:"", s3:"", s4:"", price:"", again:"", critique:"", p1:"", p2:"" },
+    c2: { flavor:"", isSalado: false, s1:"", s2:"", s3:"", s4:"", price:"", again:"", critique:"", p1:"", p2:"" },
+    c3: { item:"", isSubstituted: false, dq:"", justify:"", s1:"", s2:"", s3:"", s4:"", price:"", again:"", critique:"", p1:"", p2:"" }
+  };
+}
+
+function normalize(entry) {
+  const base = createEmptyEntry();
+  if (!entry || typeof entry !== "object") return base;
+  const out = { ...base, ...entry };
+  CATS.forEach(c => out[c] = { ...base[c], ...(entry[c] || {}) });
+  return out;
+}
+
+// ---------- Reglas Matemáticas y Calificación Robusta ----------
+function isCatEvaluated(cat) {
+  return [cat.s1, cat.s2, cat.s3, cat.s4].some(v => v !== "" && v !== null && !isNaN(parseFloat(v)));
+}
+
+function calcTotal(cat, isSalado) {
+  if (isSalado) return 0;
+  return [cat.s1, cat.s2, cat.s3, cat.s4].map(v => parseFloat(v) || 0).reduce((a,b) => a+b, 0);
+}
+
+// Estado: "unvisited", "partial", "complete"
+function getEntryAudit(d) {
+  const hasC1 = isCatEvaluated(d.c1);
+  const hasC2 = d.c2.isSalado || isCatEvaluated(d.c2);
+  const hasC3 = isCatEvaluated(d.c3);
+
+  const evalCount = (hasC1 ? 1 : 0) + (hasC2 ? 1 : 0) + (hasC3 ? 1 : 0);
+  if (evalCount === 0) return { status: "unvisited", score: 0, count: 0 };
+
+  const requiredCount = d.c2.isSalado ? 2 : 3;
+  const isComplete = hasC1 && hasC2 && hasC3;
+
+  const t1 = calcTotal(d.c1, false);
+  const t2 = calcTotal(d.c2, d.c2.isSalado);
+  const t3 = calcTotal(d.c3, false);
+
+  const validScores = [t1];
+  if (!d.c2.isSalado) validScores.push(t2);
+  validScores.push(t3);
+
+  // Promedio estricto sobre las categorías válidas
+  const avg = validScores.reduce((a,b) => a+b, 0) / requiredCount;
+
+  return {
+    status: isComplete ? "complete" : "partial",
+    score: avg,
+    evalCount,
+    requiredCount
+  };
+}
+
+function calcWeightedEntryScore(d) {
+  return getEntryAudit(d).score;
+}
+
+function isEvaluated(entry) {
+  return getEntryAudit(entry).status !== "unvisited";
+}
+
+const fmt = n => Number.isInteger(n) ? n : n.toFixed(1);
+
+function getPriceBadgeHTML(priceVal, zone) {
+  const precio = parseFloat(priceVal);
+  if (isNaN(precio) || precio <= 0) return "";
+  if (precio < 1.20) return `<span class="badge-context badge-barato">💸 Hallazgo Económico (${esc(zone)})</span>`;
+  if (precio <= 2.20) return `<span class="badge-context badge-estandar">⚖️ Precio Estándar UIO (${esc(zone)})</span>`;
+  if (["Cumbayá", "Tumbaco", "Nayón", "Guayasamín"].includes(zone)) return `<span class="badge-context badge-premium">💰 Premium / Valle (${esc(zone)})</span>`;
+  if (["Centro", "Sur", "Conocoto", "Valle de los Chillos", "La Armenia"].includes(zone)) return `<span class="badge-context badge-alert">⚠️ Costoso para la Zona (${esc(zone)})</span>`;
+  return `<span class="badge-context badge-premium">✨ Alta Gama / Premium (${esc(zone)})</span>`;
+}
+
+function updateProgress() {
+  const done = BAKERIES.filter((_, i) => getEntryAudit(dbData[i]).status === "complete").length;
+  document.getElementById("progress-txt").textContent = `${done} / ${BAKERIES.length} completas`;
+  document.getElementById("progress-fill").style.transform = `scaleX(${done / BAKERIES.length})`;
+}
+
+// ---------- Renderizado ----------
+function setFilter(btn) {
+  document.querySelectorAll("#filter-status button").forEach(b => b.classList.toggle("active", b === btn));
+  filterMode = btn.dataset.v;
+  renderList(true);
+}
+
+function setSector(btn) {
+  document.querySelectorAll("#filter-sector button").forEach(b => b.classList.toggle("active", b === btn));
+  filterSector = btn.dataset.sec;
+  renderList(true);
+}
+
+function scoreInput(idx, cat, key, label, val) {
+  return `<div class="score-item"><span>${label}</span><input type="number" inputmode="decimal" min="0" max="10" step="0.5" value="${esc(val)}" placeholder="–" oninput="updScore(this, ${idx},'${cat}','${key}')"></div>`;
+}
+
+function againSelect(idx, cat, val) {
+  return `<select onchange="upd(${idx},'${cat}','again',this.value)">
+    <option value="">¿Volvería?</option>
+    <option value="Sí" ${val==='Sí'?'selected':''}>Sí, vale la pena</option>
+    <option value="No" ${val==='No'?'selected':''}>No volvería</option>
+  </select>`;
+}
+
+function catHeader(idx, cat, kicker, name, total) {
+  return `<div class="cat-header"><div><div class="cat-kicker">${kicker}</div><div class="cat-name">${name}</div></div>
+    <span class="score-pill" id="tot-${idx}-${cat}">${fmt(total)}<small> /40</small></span></div>`;
+}
+
+function renderFlavorChips(idx, cat, currentVal) {
+  const field = cat === "c2" ? "flavor" : "item";
+  return `<div class="sabor-chips">
+    ${FLAVOR_CHIPS.map(label => {
+      const clean = label.replace(/^[^\s]+\s/, "");
+      const isSelected = currentVal && currentVal.toLowerCase() === clean.toLowerCase();
+      return `<button type="button" class="chip ${isSelected ? 'selected' : ''}" onclick="pickChip(${idx}, '${cat}', '${field}', '${clean}')">${label}</button>`;
+    }).join("")}
+  </div>`;
+}
+
+function renderPhotos(idx, cat, label1, label2, data) {
+  const box = (key, label) => {
+    const hasImg = !!data[key];
+    return `
+    <label class="photo-box ${hasImg ? 'has' : ''}">
+      ${hasImg ? `<img src="${esc(data[key])}"><button type="button" class="photo-del" onclick="removePhoto(event, ${idx}, '${cat}', '${key}')">×</button>` : ''}
+      ${icon("cam")}<span class="ph-label">📸 ${label}</span>
+      <input type="file" accept="image/*" onchange="handlePhoto(event, ${idx}, '${cat}', '${key}')">
+    </label>`;
+  };
+  return `<div class="photo-grid">${box("p1", label1)}${box("p2", label2)}</div>`;
+}
+
+function renderList(animate) {
+  updateProgress();
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const container = document.getElementById("bakery-list");
+  container.classList.toggle("stagger", !!animate);
+  const parts = [];
+
+  BAKERIES.forEach((bObj, idx) => {
+    const name = bObj.name;
+    const zone = bObj.zone;
+    const sector = bObj.sector;
+    const d = dbData[idx];
+    const audit = getEntryAudit(d);
+
+    if (filterSector !== "all" && sector !== filterSector) return;
+    if (q && !name.toLowerCase().includes(q) && !zone.toLowerCase().includes(q)) return;
+    if (filterMode === "pending" && audit.status === "complete") return;
+    if (filterMode === "done" && audit.status !== "complete") return;
+
+    const t1 = calcTotal(d.c1, false);
+    const t2 = calcTotal(d.c2, d.c2.isSalado);
+    const t3 = calcTotal(d.c3, false);
+    const open = openCardId === idx;
+
+    // Métricas económicas $/Punto
+    const p1 = parseFloat(d.c1.price) || 0;
+    const ratio = (t1 > 0 && p1 > 0) ? (p1 / t1).toFixed(2) : null;
+
+    let badgeClass = "pending";
+    let badgeTxt = "Pendiente";
+    if (audit.status === "complete") { badgeClass = "done"; badgeTxt = "Evaluada"; }
+    else if (audit.status === "partial") { badgeClass = "partial"; badgeTxt = "En Progreso"; }
+
+    const meta = audit.status !== "unvisited"
+      ? `<span>Puro <b>${fmt(t1)}</b></span><span>Relleno <b>${d.c2.isSalado ? 'DESC.' : fmt(t2)}</b></span><span>Cat III <b>${fmt(t3)}</b></span><span>Prom. <b>${fmt(audit.score)}/40</b></span>`
+      : `<span>${d.date ? "Visita " + esc(d.date) : "Sin registrar"}</span>`;
+
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + zone + ' Quito')}`;
+    const isSub = !!d.c3.isSubstituted;
+
+    parts.push(`
+    <article class="bakery-card ${open ? 'open' : ''} ${audit.status === 'complete' ? 'done' : ''}" id="card-${idx}">
+      <div class="bakery-header" onclick="toggleCard(${idx})">
+        <span class="num">${String(idx+1).padStart(2, "0")}</span>
+        <div>
+          <div class="bakery-name">
+            ${esc(name)} 
+            <span class="zone-pill">📍 ${esc(zone)}</span>
+            <a href="${mapsUrl}" target="_blank" class="maps-link" onclick="event.stopPropagation()">🗺️ Maps</a>
+          </div>
+          <div class="bakery-meta">${meta}</div>
+        </div>
+        <div class="right"><span class="tag ${badgeClass}">${badgeTxt}</span><svg class="i chev"><use href="#i-chev"/></svg></div>
+      </div>
+
+      ${open ? `<div class="bakery-body">
+        <div class="field-label">${icon("cal")} Fecha de visita oficial</div>
+        <input type="date" min="2026-11-09" value="${esc(d.date)}" onchange="upd(${idx}, 'date', null, this.value)">
+
+        <!-- CAT 1: PURO -->
+        <section class="cat-block">
+          ${catHeader(idx, "c1", "Categoría I", "Croissant Puro", t1)}
+          <label class="switch-row danger">
+            <span>🧈 ¿Presencia evidente de margarina o grasa vegetal? (Penaliza materiales)</span>
+            <input type="checkbox" ${d.c1.isMargarina ? 'checked' : ''} onchange="toggleMargarina(${idx}, this.checked)">
+          </label>
+          ${renderPhotos(idx, 'c1', 'Exterior Dorado', 'Alveolado Abierto', d.c1)}
+          <div class="score-grid">
+            ${scoreInput(idx,'c1','s1','Look (1-10)',d.c1.s1)}
+            ${scoreInput(idx,'c1','s2', d.c1.isMargarina ? 'Materiales (Penalizado)' : 'Materiales (1-10)', d.c1.s2)}
+            ${scoreInput(idx,'c1','s3','Laminado (1-10)',d.c1.s3)}
+            ${scoreInput(idx,'c1','s4','Sabor/Textura',d.c1.s4)}
+          </div>
+          <textarea placeholder="✍️ Crítica técnica del Croissant Puro…" oninput="upd(${idx},'c1','critique',this.value)">${esc(d.c1.critique)}</textarea>
+          <div class="row">
+            <input type="number" inputmode="decimal" step="0.01" placeholder="💵 Precio $" value="${esc(d.c1.price)}" oninput="upd(${idx},'c1','price',this.value); updatePriceBadge(${idx}, this.value)">
+            ${againSelect(idx, 'c1', d.c1.again)}
+          </div>
+          <div id="pbadge-${idx}">${getPriceBadgeHTML(d.c1.price, zone)}</div>
+          ${ratio ? `<div class="metrics-box"><span>Índice Rendimiento Económico:</span><span style="color:var(--crust);">$${ratio} por punto</span></div>` : ''}
+        </section>
+
+        <!-- CAT 2: RELLENO -->
+        <section class="cat-block">
+          ${catHeader(idx, "c2", "Categoría II", "Croissant Relleno", t2)}
+          <label class="switch-row danger">
+            <span>🚫 ¿Solo tenían croissant salado? (Descalificar afrenta)</span>
+            <input type="checkbox" ${d.c2.isSalado ? 'checked' : ''} onchange="toggleSalado(${idx}, this.checked)">
+          </label>
+          ${d.c2.isSalado ? `<div class="dq-banner">❌ CATEGORÍA DESCALIFICADA (0/40): Los croissants salados violan la tradición francesa. El divisor se ajusta automáticamente.</div>` : ''}
+          <div class="${d.c2.isSalado ? 'disabled-wrap' : ''}">
+            <div class="field-label">Sabor elegido:</div>
+            ${renderFlavorChips(idx, "c2", d.c2.flavor)}
+            <input type="text" placeholder="Sabor dulce seleccionado…" value="${esc(d.c2.flavor)}" oninput="upd(${idx},'c2','flavor',this.value)" style="margin-bottom:8px;">
+            ${renderPhotos(idx, 'c2', 'Look / Decoración', 'Corte Interior', d.c2)}
+            <div class="score-grid">
+              ${scoreInput(idx,'c2','s1','Look / Textura',d.c2.s1)}
+              ${scoreInput(idx,'c2','s2','Calidad Relleno',d.c2.s2)}
+              ${scoreInput(idx,'c2','s3','Cantidad Relleno',d.c2.s3)}
+              ${scoreInput(idx,'c2','s4','Sabor Global',d.c2.s4)}
+            </div>
+            <textarea placeholder="✍️ Crítica del Croissant Relleno…" oninput="upd(${idx},'c2','critique',this.value)">${esc(d.c2.critique)}</textarea>
+            <div class="row">
+              <input type="number" inputmode="decimal" step="0.01" placeholder="💵 Precio $" value="${esc(d.c2.price)}" oninput="upd(${idx},'c2','price',this.value)">
+              ${againSelect(idx, 'c2', d.c2.again)}
+            </div>
+          </div>
+        </section>
+
+        <!-- CAT 3: NOVELTY -->
+        <section class="cat-block">
+          ${catHeader(idx, "c3", "Categoría III", isSub ? "2do Croissant Relleno (Sustitución)" : "Novelty Item (Ítem de Autor)", t3)}
+          <label class="switch-row">
+            <span>🔄 Sin Novelty apto: Sustituir por 2do Croissant Relleno</span>
+            <input type="checkbox" ${isSub ? 'checked' : ''} onchange="toggleSubNovelty(${idx}, this.checked)">
+          </label>
+          ${isSub ? `
+            <input type="text" placeholder="Motivo de descalificación del Novelty…" value="${esc(d.c3.dq)}" oninput="upd(${idx},'c3','dq',this.value)" style="margin-bottom:8px;">
+            <div class="field-label">Sabor del Segundo Relleno:</div>
+            ${renderFlavorChips(idx, "c3", d.c3.item)}
+          ` : ''}
+          <input type="text" placeholder="${isSub ? 'Sabor 2do Croissant Relleno…' : 'Ítem de Autor (Pain au chocolat, NY Roll, Pan Suisse…)'}" value="${esc(d.c3.item)}" oninput="upd(${idx},'c3','item',this.value)" style="margin-bottom:8px;">
+          ${renderPhotos(idx, 'c3', 'Look Exterior', 'Corte Interior', d.c3)}
+          <div class="score-grid">
+            ${scoreInput(idx,'c3','s1', isSub ? 'Look/Textura' : '1. Masa (Hojaldre)', d.c3.s1)}
+            ${scoreInput(idx,'c3','s2', isSub ? 'Calidad Relleno' : '2. Materiales', d.c3.s2)}
+            ${scoreInput(idx,'c3','s3', isSub ? 'Cantidad Relleno' : '3. Relleno', d.c3.s3)}
+            ${scoreInput(idx,'c3','s4', isSub ? 'Sabor Global' : '4. Sabor Distintivo', d.c3.s4)}
+          </div>
+          <textarea placeholder="✍️ Crítica detallada…" oninput="upd(${idx},'c3','critique',this.value)">${esc(d.c3.critique)}</textarea>
+          <div class="row">
+            <input type="number" inputmode="decimal" step="0.01" placeholder="💵 Precio $ (Máx $4.00)" value="${esc(d.c3.price)}" oninput="upd(${idx},'c3','price',this.value); checkNoveltyPrice(${idx}, this.value)">
+            ${againSelect(idx, 'c3', d.c3.again)}
+          </div>
+          <div id="warn-${idx}" style="display:${!isSub && parseFloat(d.c3.price)>4 ? 'block' : 'none'}; margin-top:8px;">
+            <div class="warn" style="display:flex; margin-bottom:6px;">${icon("alert")} 🚨 Excede $4.00. Justificación técnica obligatoria:</div>
+            <textarea placeholder="Justifica por qué vale más de $4.00…" oninput="upd(${idx},'c3','justify',this.value)">${esc(d.c3.justify)}</textarea>
+          </div>
+        </section>
+
+        <button class="btn gold" onclick="launchVeredicto(${idx})">👑 Ver Veredicto Oficial</button>
+        <button class="btn ghost" onclick="copyForNotes(${idx})">${icon("copy")} Copiar ficha para Apple Notes</button>
+      </div>` : ""}
+    </article>`);
+  });
+
+  container.innerHTML = parts.length ? parts.join("") : `<div class="empty-state">${icon("croissant")}<div class="big">Sin resultados</div></div>`;
+}
+
+// ---------- Handlers Interactivos ----------
+function toggleCard(idx) {
+  openCardId = openCardId === idx ? null : idx;
+  renderList();
+  if (openCardId !== null) {
+    const el = document.getElementById(`card-${idx}`);
+    const top = el.getBoundingClientRect().top + window.scrollY - document.querySelector("header").offsetHeight - 10;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+}
+
+function touch(idx) {
+  dbData[idx].updatedAt = Date.now();
+  saveLocal();
+  updateProgress();
+}
+
+function upd(idx, cat, field, val) {
+  if (!field) dbData[idx][cat] = val;
+  else dbData[idx][cat][field] = val;
+  touch(idx);
+}
+
+function updScore(input, idx, cat, key) {
+  let v = input.value;
+  if (v !== "") {
+    const n = parseFloat(v);
+    if (n > 10) { v = "10"; input.value = v; }
+    if (n < 0) { v = "0"; input.value = v; }
+  }
+  dbData[idx][cat][key] = v;
+  const isSalado = cat === "c2" && dbData[idx].c2.isSalado;
+  const totEl = document.getElementById(`tot-${idx}-${cat}`);
+  if (totEl) totEl.innerHTML = `${fmt(calcTotal(dbData[idx][cat], isSalado))}<small> /40</small>`;
+  touch(idx);
+}
+
+function updatePriceBadge(idx, val) {
+  const box = document.getElementById(`pbadge-${idx}`);
+  if (box) box.innerHTML = getPriceBadgeHTML(val, BAKERIES[idx].zone);
+}
+
+function checkNoveltyPrice(idx, val) {
+  const isSub = !!dbData[idx].c3.isSubstituted;
+  const el = document.getElementById(`warn-${idx}`);
+  if (el) el.style.display = (!isSub && parseFloat(val) > 4) ? "block" : "none";
+}
+
+function pickChip(idx, cat, field, cleanFlavor) {
+  if (cleanFlavor.startsWith("Otro")) {
+    const custom = prompt("Ingresa el sabor dulce personalizado:");
+    if (!custom) return;
+    dbData[idx][cat][field] = custom.trim();
+  } else {
+    dbData[idx][cat][field] = cleanFlavor;
+  }
+  touch(idx);
+  renderList();
+}
+
+function toggleMargarina(idx, checked) {
+  dbData[idx].c1.isMargarina = checked;
+  if (checked) {
+    let s2 = parseFloat(dbData[idx].c1.s2);
+    if (!isNaN(s2) && s2 > 4) dbData[idx].c1.s2 = "4"; // Penalización de materiales
+  }
+  touch(idx);
+  renderList();
+}
+
+function toggleSalado(idx, checked) {
+  dbData[idx].c2.isSalado = checked;
+  if (checked) {
+    dbData[idx].c2.s1 = "0"; dbData[idx].c2.s2 = "0"; dbData[idx].c2.s3 = "0"; dbData[idx].c2.s4 = "0";
+  }
+  touch(idx);
+  renderList();
+}
+
+function toggleSubNovelty(idx, checked) {
+  dbData[idx].c3.isSubstituted = checked;
+  touch(idx);
+  renderList();
+}
+
+function handlePhoto(e, idx, cat, pKey) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxW = 900;
+      const scale = img.width > maxW ? maxW / img.width : 1;
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      dbData[idx][cat][pKey] = canvas.toDataURL("image/jpeg", 0.76);
+      touch(idx);
+      renderList();
+      toast("📸 Fotografía guardada");
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(e, idx, cat, pKey) {
+  e.preventDefault(); e.stopPropagation();
+  if (!confirm("¿Eliminar fotografía?")) return;
+  dbData[idx][cat][pKey] = "";
+  touch(idx);
+  renderList();
+}
+
+// ---------- Modal Veredicto ----------
+function launchVeredicto(idx) {
+  const d = dbData[idx];
+  const audit = getEntryAudit(d);
+
+  if (audit.status === "unvisited") {
+    toast("Ingresa calificaciones antes de consultar el veredicto.");
+    return;
+  }
+
+  activeStoryIdx = idx;
+  const overlay = document.getElementById("veredicto-overlay");
+  const box = document.getElementById("veredicto-box");
+  const iconWrap = document.getElementById("veredicto-icon-wrapper");
+  const title = document.getElementById("veredicto-title");
+  const scoreTxt = document.getElementById("veredicto-score");
+  const statusWrap = document.getElementById("veredicto-status-wrap");
+  const bakeryTxt = document.getElementById("veredicto-bakery");
+
+  box.className = "veredicto-content";
+  bakeryTxt.textContent = `${BAKERIES[idx].name} — ${BAKERIES[idx].zone}`;
+  scoreTxt.textContent = `Nota Ponderada: ${fmt(audit.score)} / 40.0`;
+
+  if (audit.status === "partial") {
+    iconWrap.innerHTML = `<span class="veredicto-badge-icon">⏳</span>`;
+    title.textContent = "Evaluación Incompleta";
+    box.classList.add("decor-partial");
+    statusWrap.innerHTML = `<span class="veredicto-status" style="background:var(--butter-wash); color:var(--butter-deep);">Faltan categorías por evaluar (${audit.evalCount}/${audit.requiredCount})</span>`;
+  } else {
+    statusWrap.innerHTML = `<span class="veredicto-status" style="background:var(--sage-wash); color:var(--sage);">Protocolo 100% Completado</span>`;
+    if (audit.score >= 38.0) {
+      iconWrap.innerHTML = `<span class="veredicto-badge-icon">👑</span>`;
+      title.textContent = "✨ Lo Mejor de lo Mejor ✨";
+      box.classList.add("decor-top5");
+    } else if (audit.score >= 34.0) {
+      iconWrap.innerHTML = `<span class="veredicto-badge-icon">🥇</span>`;
+      title.textContent = "Excelente Calidad";
+      box.classList.add("decor-excelente");
+    } else if (audit.score >= 26.0) {
+      iconWrap.innerHTML = `<span class="veredicto-badge-icon">🥈</span>`;
+      title.textContent = "Buena Panadería";
+      box.classList.add("decor-buena");
+    } else if (audit.score >= 16.0) {
+      iconWrap.innerHTML = `<span class="veredicto-badge-icon">🥉</span>`;
+      title.textContent = "Resultado Mediocre";
+      box.classList.add("decor-mediocre");
+    } else {
+      iconWrap.innerHTML = `<span class="veredicto-badge-icon">🤮</span>`;
+      title.textContent = "Mala Experiencia";
+      box.classList.add("decor-mala");
+    }
+  }
+
+  document.getElementById("btn-share-story").onclick = () => generateInstagramStory(idx);
+  overlay.style.display = "flex";
+}
+
+function closeVeredicto() {
+  document.getElementById("veredicto-overlay").style.display = "none";
+  renderList();
+}
+
+// ---------- Instagram Story Canvas Export ----------
+function generateInstagramStory(idx) {
+  const d = dbData[idx];
+  const bObj = BAKERIES[idx];
+  const audit = getEntryAudit(d);
+  const canvas = document.getElementById("story-canvas");
+  const ctx = canvas.getContext("2d");
+
+  // Fondo estética papel
+  ctx.fillStyle = "#f4ede1";
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  // Marco elegante
+  ctx.strokeStyle = "#c2852b";
+  ctx.lineWidth = 14;
+  ctx.strokeRect(50, 50, 980, 1820);
+
+  // Título App
+  ctx.fillStyle = "#7a3b1d";
+  ctx.font = "italic 600 58px 'Fraunces', serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Crust & Crumb UIO", 540, 150);
+
+  ctx.fillStyle = "#8f7d6c";
+  ctx.font = "700 24px 'Manrope', sans-serif";
+  ctx.fillText("REGISTRO TÉCNICO OFICIAL", 540, 200);
+
+  // Nombre Panadería
+  ctx.fillStyle = "#2a1d14";
+  ctx.font = "800 68px 'Manrope', sans-serif";
+  ctx.fillText(bObj.name, 540, 310);
+
+  ctx.fillStyle = "#c2852b";
+  ctx.font = "700 36px 'Manrope', sans-serif";
+  ctx.fillText(`📍 ${bObj.zone}`, 540, 370);
+
+  // Imagen central (Corteza o Alvéolo)
+  const imgData = d.c1.p1 || d.c1.p2 || d.c2.p1;
+  const drawDetails = () => {
+    // Caja puntuación
+    ctx.fillStyle = "#fbf7f0";
+    ctx.strokeStyle = "#dccfbb";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.roundRect(140, 1260, 800, 380, 30);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = "#7a3b1d";
+    ctx.font = "italic 600 84px 'Fraunces', serif";
+    ctx.fillText(`${fmt(audit.score)} / 40.0`, 540, 1380);
+
+    ctx.fillStyle = "#2a1d14";
+    ctx.font = "800 42px 'Manrope', sans-serif";
+    let statusText = "Evaluación Parcial";
+    if (audit.status === "complete") {
+      if (audit.score >= 38) statusText = "👑 Lo Mejor de lo Mejor";
+      else if (audit.score >= 34) statusText = "🥇 Excelente Calidad";
+      else if (audit.score >= 26) statusText = "🥈 Buena Panadería";
+      else if (audit.score >= 16) statusText = "🥉 Resultado Mediocre";
+      else statusText = "🤮 Mala Experiencia";
+    }
+    ctx.fillText(statusText, 540, 1460);
+
+    ctx.fillStyle = "#5c4a3c";
+    ctx.font = "500 28px 'Manrope', sans-serif";
+    ctx.fillText(`Puro: ${fmt(calcTotal(d.c1,false))} | Relleno: ${d.c2.isSalado ? 'DESC.' : fmt(calcTotal(d.c2,false))} | Cat III: ${fmt(calcTotal(d.c3,false))}`, 540, 1540);
+
+    // Pie de página
+    ctx.fillStyle = "#8f7d6c";
+    ctx.font = "700 28px 'Manrope', sans-serif";
+    ctx.fillText("Quito — Temporada Noviembre 2026", 540, 1750);
+
+    // Descarga directa
+    const link = document.createElement("a");
+    link.download = `Story-${bObj.name.replace(/\s+/g,'-')}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    toast("✅ Tarjeta para Instagram Story generada");
+  };
+
+  if (imgData) {
+    const photo = new Image();
+    photo.onload = () => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(140, 430, 800, 780, 30);
+      ctx.clip();
+      ctx.drawImage(photo, 140, 430, 800, 780);
+      ctx.restore();
+      drawDetails();
+    };
+    photo.src = imgData;
+  } else {
+    ctx.fillStyle = "#ebe1cf";
+    ctx.beginPath();
+    ctx.roundRect(140, 430, 800, 780, 30);
+    ctx.fill();
+    drawDetails();
+  }
+}
+
+// ---------- Comparador Directo ----------
+function populateCompareSelects() {
+  const sel1 = document.getElementById("comp-sel-1");
+  const sel2 = document.getElementById("comp-sel-2");
+  if (!sel1 || !sel2) return;
+  sel1.innerHTML = ""; sel2.innerHTML = "";
+
+  BAKERIES.forEach((b, idx) => {
+    sel1.innerHTML += `<option value="${idx}">${idx+1}. ${b.name}</option>`;
+    sel2.innerHTML += `<option value="${idx}" ${idx===1?'selected':''}>${idx+1}. ${b.name}</option>`;
+  });
+  renderComparison();
+}
+
+function renderComparison() {
+  const id1 = parseInt(document.getElementById("comp-sel-1").value);
+  const id2 = parseInt(document.getElementById("comp-sel-2").value);
+  const box = document.getElementById("compare-results");
+  const d1 = dbData[id1], d2 = dbData[id2];
+  const a1 = getEntryAudit(d1), a2 = getEntryAudit(d2);
+
+  const col = (b, d, a) => `
+    <div class="compare-col">
+      <b>${b.name}</b><br><small style="color:var(--muted);">${b.zone}</small>
+      ${d.c1.p2 ? `<img src="${d.c1.p2}" class="compare-img" alt="Alveolado">` : `<div class="compare-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);">Sin foto interior</div>`}
+      <div><b>Promedio:</b> ${fmt(a.score)}/40</div>
+      <div><b>Puro:</b> ${fmt(calcTotal(d.c1,false))}</div>
+      <div><b>Relleno:</b> ${d.c2.isSalado ? 'DESC.' : fmt(calcTotal(d.c2,false))}</div>
+      <div><b>Novelty:</b> ${fmt(calcTotal(d.c3,false))}</div>
+      <div><b>Precio Puro:</b> $${d.c1.price || '0.00'}</div>
+    </div>`;
+
+  box.innerHTML = `<div class="compare-grid">${col(BAKERIES[id1], d1, a1)}${col(BAKERIES[id2], d2, a2)}</div>`;
+}
+
+// ---------- Ranking ----------
+function setRankMode(btn) {
+  document.querySelectorAll("#rank-category button").forEach(b => b.classList.toggle("active", b === btn));
+  rankMode = btn.dataset.v;
+  renderRanking();
+}
+
+function renderRanking() {
+  const list = document.getElementById("ranking-list");
+  const ranked = BAKERIES.map((bObj, idx) => {
+    const d = dbData[idx];
+    const audit = getEntryAudit(d);
+    let score = 0;
+    if (rankMode === "total") score = audit.score;
+    else if (rankMode === "c1") score = calcTotal(d.c1, false);
+    else if (rankMode === "c2") score = calcTotal(d.c2, d.c2.isSalado);
+    else if (rankMode === "c3") score = calcTotal(d.c3, false);
+    return { name: bObj.name, zone: bObj.zone, idx, score: Math.round(score * 10) / 10, status: audit.status };
+  }).filter(x => x.score > 0).sort((a,b) => b.score - a.score);
+
+  if (!ranked.length) {
+    list.innerHTML = `<div class="empty-state">${icon("trophy")}<div class="big">El podio está vacío</div></div>`;
+    return;
+  }
+
+  const pod = (item, pos) => item
+    ? `<div class="pod ${pos === 1 ? 'first' : ''}" onclick="jumpToBakery(${item.idx})">
+        <div class="medal">${pos}</div>
+        <div class="pname">${esc(item.name)}</div>
+        <div class="pscore">${fmt(item.score)}<small>/40</small></div>
+      </div>`
+    : `<div class="pod empty"><div class="medal">${pos}</div><div class="pname">—</div></div>`;
+
+  const rest = ranked.slice(3).map((item, i) => `
+    <div class="rank-card" onclick="jumpToBakery(${item.idx})">
+      <span class="rank-pos">${i + 4}</span>
+      <div>
+        <div class="rank-name">${esc(item.name)} <span class="zone-pill">${esc(item.zone)}</span></div>
+        <div class="bar"><i style="transform:scaleX(${item.score / 40})"></i></div>
+      </div>
+      <span class="rank-score">${fmt(item.score)}<small>/40</small></span>
+    </div>`).join("");
+
+  list.innerHTML = `<div class="podium stagger">${pod(ranked[1], 2)}${pod(ranked[0], 1)}${pod(ranked[2], 3)}</div>${rest}`;
+}
+
+function jumpToBakery(idx) {
+  openCardId = idx;
+  switchTab("eval");
+  setTimeout(() => {
+    const el = document.getElementById(`card-${idx}`);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - document.querySelector("header").offsetHeight - 10;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  }, 60);
+}
+
+// ---------- Copia para Apple Notes ----------
+function copyForNotes(idx) {
+  const bObj = BAKERIES[idx];
+  const d = dbData[idx];
+  const audit = getEntryAudit(d);
+  const t1 = calcTotal(d.c1, false);
+  const t2 = calcTotal(d.c2, d.c2.isSalado);
+  const t3 = calcTotal(d.c3, false);
+
+  const txt = `${idx+1}. ${bObj.name} (${bObj.zone})
+📅 Fecha: [${d.date || ' '}]
+
+🥐 Cat 1: Croissant Puro ${d.c1.isMargarina ? '[PENALIZADO: Presencia de Margarina/Grasa]' : ''}
+📸 [Foto Look]  |  📸 [Foto Laminado]
+✍️ Crítica: ${d.c1.critique || ''}
+📊 Puntuación: Look: [${d.c1.s1||0}]/10 | Materiales: [${d.c1.s2||0}]/10 | Laminado: [${d.c1.s3||0}]/10 | Sabor: [${d.c1.s4||0}]/10
+🏆 Total: [${t1}]/40  |  💵 $[${d.c1.price||0}]  |  🔄 Volvería: [${d.c1.again||' '}]
+
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+🍫 Cat 2: Croissant Relleno (Sabor: [${d.c2.isSalado ? 'DESCALIFICADO POR SALADO' : (d.c2.flavor||' ')}])
+📸 [Foto Look]  |  📸 [Foto Relleno]
+✍️ Crítica: ${d.c2.critique || ''}
+📊 Puntuación: Look/Textura: [${d.c2.s1||0}]/10 | Calidad Relleno: [${d.c2.s2||0}]/10 | Cantidad: [${d.c2.s3||0}]/10 | Sabor: [${d.c2.s4||0}]/10
+🏆 Total: [${t2}]/40  |  💵 $[${d.c2.price||0}]  |  🔄 Volvería: [${d.c2.again||' '}]
+
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+🧁 Cat 3: ${d.c3.isSubstituted ? '2do Croissant Relleno (Sustitución)' : 'Novelty Item'} (Ítem: [${d.c3.item||' '}])
+⚠️ Descalificado: [${d.c3.isSubstituted ? (d.c3.dq||'Sí') : 'No'}]
+📸 [Foto Look]  |  📸 [Foto Interior]
+✍️ Crítica: ${d.c3.critique || ''}
+📊 Puntuación: Masa/Look: [${d.c3.s1||0}]/10 | Materiales: [${d.c3.s2||0}]/10 | Relleno: [${d.c3.s3||0}]/10 | Sabor: [${d.c3.s4||0}]/10
+🏆 Total: [${t3}]/40  |  💵 $[${d.c3.price||0}]  |  🔄 Volvería: [${d.c3.again||' '}]
+
+👑 Estado: ${audit.status === 'complete' ? 'Completado' : 'Evaluación Parcial'} | Promedio Ponderado: [${fmt(audit.score)}]/40`;
+
+  navigator.clipboard.writeText(txt).then(() => toast("📋 Ficha copiada para Apple Notes"));
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  ["home", "eval", "rank", "rules"].forEach(t => document.getElementById(`tab-${t}`).style.display = t === tab ? "block" : "none");
+  window.scrollTo({ top: 0 });
+  if (tab === "rank") { populateCompareSelects(); renderRanking(); }
+  if (tab === "eval") renderList(true);
+}
+
+// ---------- Backup JSON ----------
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(dbData)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `crust-crumb-uio-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = async ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      BAKERIES.forEach((_, i) => { dbData[i] = normalize(parsed[i]); });
+      await saveLocal();
+      renderList();
+      toast("✅ Respaldo y fotos restaurados");
+    } catch { toast("❌ Archivo inválido"); }
+  };
+  r.readAsText(file);
+}
+
+async function init() {
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  const local = await loadLocal();
+  BAKERIES.forEach((_, i) => dbData[i] = normalize(local[i]));
+  renderList(true);
+}
+
+init();
+</script>
+</body>
+</html>
