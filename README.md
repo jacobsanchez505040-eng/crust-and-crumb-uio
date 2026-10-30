@@ -1,67 +1,69 @@
 # Crust & Crumb UIO 🥐
 
-**Sistema Independiente de Auditoría y Ranking de Bollería Artesanal en Quito**
+**Sistema Independiente de Auditoría y Ranking de Bollería Artesanal en Quito.**
 
-Crust & Crumb UIO es una aplicación web de página única (SPA) diseñada bajo un enfoque *Mobile-First* para la evaluación técnica, catalogación y ranking de croissants y bollería de alta gama en Quito y sus valles. Construida con una arquitectura **Zero-Backend**, la aplicación funciona de manera 100% local en el dispositivo del auditor, garantizando velocidad, privacidad y portabilidad de datos sin necesidad de servidores, bases de datos externas o conexión constante a internet.
+Crust & Crumb UIO es una Aplicación Web Progresiva (PWA) de página única, diseñada bajo un enfoque *Mobile-First*, dedicada a la evaluación técnica, catalogación y ranking de croissants y bollería de alta gama en la ciudad de Quito y sus valles. Construida con una arquitectura **Zero-Backend**, la aplicación funciona de manera 100% local en el dispositivo del auditor, garantizando velocidad, privacidad absoluta y portabilidad de datos sin necesidad de servidores externos ni conexión constante a internet.
+
+---
 
 ## 🚀 Características Principales
 
-* **Arquitectura Zero-Backend (IndexedDB):** Toda la información (calificaciones, textos y fotografías codificadas en Base64) se almacena de forma persistente en el navegador del usuario utilizando `IndexedDB`.
-* **Interfaz Táctil a Una Mano:** Diseñada para trabajo de campo en cafeterías. Cuenta con selectores numéricos de toque rápido (Tap-Grid) para ingresar puntajes del 1 al 10 (con incrementos de 0.5) sin necesidad de abrir el teclado del teléfono.
-* **Motor de Reglas Gastronómicas:** El código aplica reglas de negocio estrictas en tiempo real:
-* Penalizaciones automáticas en el puntaje si se detecta uso de margarina.
-* Descalificación automática de croissants salados.
-* Requisito de justificación técnica obligatoria si un ítem de autor supera la barrera de los $4.00.
+*   **Arquitectura Zero-Backend (IndexedDB):** Toda la información (calificaciones de 0 a 10, textos, estados y fotografías codificadas en Base64) se almacena de forma persistente directamente en el navegador del usuario.
+*   **Interfaz Táctil a Una Mano (Tap-Grid):** Diseñada para trabajo de campo. Cuenta con selectores numéricos de toque rápido del 0 al 10 (con incrementos de 0.5) para ingresar puntajes sin necesidad de abrir el teclado del teléfono.
+*   **Filtro Geográfico ("📍 Cerca de mí"):** Utiliza la API de Geolocalización (HTML5) y la fórmula de Haversine para ordenar instantáneamente el catálogo de panaderías según la proximidad del usuario en kilómetros.
+*   **La Ruleta del Auditor:** Un sistema de gamificación que elige aleatoriamente un local en estado "Pendiente" para resolver la fatiga de decisión sobre qué panadería visitar en el día.
+*   **Modo Oscuro "Editorial Night":** Un tema visual alternativo de alta gama (Ink-black y dorado) que relaja la vista y resalta las fotografías de los productos. Guarda la preferencia en el almacenamiento local.
+*   **Comparador "Modo Versus":** Enfrenta a dos panaderías asalto por asalto, generando un gráfico de polígono (Radar SVG) mediante trigonometría en JavaScript y emitiendo un veredicto técnico automático.
+*   **El "Wrapped" del Auditor:** Motor gráfico integrado (`Canvas API`) que compila las puntuaciones, inversión total acumulada, alertas de margarina y fotografías del líder absoluto en un póster `.png` (1080x1920) listo para exportar y publicar en Instagram Stories.
+*   **Sistema de Mención Honorífica (Bonus Track):** Categoría aislada matemáticamente del ranking oficial para documentar joyas gastronómicas fuera de concurso (postres, café de especialidad, galletería), con su propio Podio de clasificaciones.
+*   **Portabilidad de Datos:** Funciones integradas para descargar la base de datos completa en un archivo `.json` y restaurarla en cualquier otro dispositivo.
 
-
-* **Procesamiento de Imágenes Cliente-Lado:** Captura o sube fotos directamente desde la interfaz. El sistema utiliza la `Canvas API` para redimensionar y comprimir las imágenes automáticamente antes de guardarlas en la base de datos local.
-* **Generador de Instagram Stories:** Motor gráfico integrado que compila las puntuaciones, el veredicto final y las fotografías del croissant en un canvas oculto, exportando un archivo `.png` (1080x1920) con diseño editorial listo para publicar en redes sociales.
-* **Comparador de Radar Biométrico:** Generación dinámica de gráficos de radar en formato `<svg>` puro (usando trigonometría en JavaScript) para comparar visualmente el rendimiento de dos panaderías frente a frente.
-* **Portabilidad Total de Datos:** Funciones integradas para exportar la base de datos completa (incluyendo imágenes) a un archivo `.json` plano, y restaurarlo en cualquier otro dispositivo.
+---
 
 ## 🛠️ Stack Tecnológico
 
-La aplicación está construida sin *frameworks* ni librerías de terceros para garantizar un rendimiento óptimo, carga instantánea y longevidad del código.
+La aplicación está construida utilizando tecnologías web nativas, sin depender de *frameworks* pesados (como React o Angular), garantizando un rendimiento óptimo y carga instantánea.
 
-* **Frontend:** HTML5 Semántico, CSS3 (Custom Properties, Grid, Flexbox, UI Responsivo).
-* **Lógica y Estado:** Vanilla JavaScript (ES6+).
-* **Almacenamiento:** Native `IndexedDB` API (vía API asíncrona transaccional).
-* **Gráficos & Exportación:** HTML5 `<canvas>` API, `<svg>` en línea.
-* **Alojamiento:** Preparado para GitHub Pages (Static Hosting).
+*   **Frontend:** HTML5 Semántico, CSS3 (Custom Properties, Flexbox, CSS Grid) y utilidades de Tailwind CSS inyectadas vía CDN.
+*   **Lógica y Estado:** Vanilla JavaScript (ES6+).
+*   **Almacenamiento Local:** API de `IndexedDB` nativa del navegador.
+*   **Gráficos & Exportación:** Manipulación dinámica del DOM para SVG y renderizado offline mediante `HTML5 Canvas`.
+*   **Distribución:** Web App Manifest (PWA) compatible con iOS (Safari) y Android (Chrome) para instalación directa en la pantalla de inicio.
+*   **Alojamiento:** GitHub Pages (Static Hosting).
 
-## 📋 Protocolo de Evaluación (Categorías)
+---
 
-El sistema soporta una base de datos de 38 establecimientos pre-cargados y los evalúa bajo tres métricas sobre 40 puntos cada una:
+## 📋 Metodología y Protocolo de Evaluación
 
-1. **Classic Croissant:** Evalúa *Crujiente (10)*, *Alveolado (10)*, *Sabor (10)* y *Aspecto (10)*. Búsqueda de la técnica tradicional francesa.
-2. **Croissant Relleno:** Evalúa *Textura Interna (10)*, *Distribución (10)*, *Balance de Sabor (10)* y *Presentación (10)*. El relleno no debe colapsar la masa base.
-3. **Novelty Item (Ítem de Autor):** Evalúa *Textura Perfecta (10)*, *Cobertura/Topping (10)*, *Diseño/Estructura (10)* y *Sabor Principal (10)*. Ejemplos: New York Rolls, Pain au Chocolat, Pain Suisse. (Sustituible por un segundo croissant relleno si el local no califica).
+El ranking se compone de un catálogo cerrado de **40 establecimientos**, evaluados rigurosamente sobre un máximo de **40 puntos** bajo tres categorías oficiales:
 
-## 💻 Instalación y Uso
+1.  **Classic Croissant (Puro):** Evaluación de la autenticidad tradicional (Crujiente, Alveolado, Sabor a Mantequilla, Aspecto).
+2.  **Croissant Relleno:** Evaluación del equilibrio técnico entre la masa hojaldrada y el relleno (humedad, distribución, balance). *Los croissants salados incurren en descalificación inmediata.*
+3.  **Novelty Item (De Autor):** Innovación vienesa (NY Rolls, Pain Suisse, Pain au Chocolat). Restringido a ítems de un valor máximo sugerido de $4.00.
 
-Dado que es una aplicación estática, no se requiere configuración de entorno, compilación (build steps) ni instalación de dependencias (`npm`).
+---
 
-1. Clona este repositorio:
+## 📱 Instalación (Como PWA en iOS/Android)
+
+Al ser una aplicación web progresiva, no requiere descargas desde la App Store ni Google Play.
+
+1.  Abre el navegador web de tu dispositivo móvil (Safari en iOS, Chrome en Android).
+2.  Visita la URL de despliegue oficial: `https://[tu-usuario].github.io/crust-and-crumb-uio/`
+3.  **En iOS (Safari):** Toca el ícono de "Compartir" en la barra inferior y selecciona **"Agregar a la pantalla de inicio"**.
+4.  **En Android (Chrome):** Toca el menú de tres puntos en la esquina superior derecha y selecciona **"Instalar aplicación"** o **"Agregar a la pantalla de inicio"**.
+5.  Inicia la aplicación desde el ícono de tu escritorio; a partir de este momento, funciona offline.
+
+---
+
+## 💻 Desarrollo Local
+
+Para correr o modificar el proyecto en tu máquina local:
+
+1.  Clona el repositorio:
+    
 ```bash
-git clone https://github.com/TU_USUARIO/crust-and-crumb-uio.git
+    git clone [https://github.com/jacobsanchez505040-eng/crust-and-crumb-uio.git](https://github.com/jacobsanchez505040-eng/crust-and-crumb-uio.git)
 
-```
+🖋️ Créditos
 
-
-2. Abre la carpeta del proyecto.
-3. Asegúrate de tener la carpeta `/assets` en la raíz con las 5 imágenes editoriales de muestra (`puro-exterior.png`, `puro-interior.png`, `relleno-exterior.png`, `relleno-interior.png`, `nyrolls.png`, `painauchocolat.png`, `noveltyej1.png`).
-4. Abre el archivo `index.html` en cualquier navegador web moderno (Safari, Chrome, Firefox, Edge).
-5. Para uso óptimo, abre la URL alojada desde tu iPhone y selecciona **"Agregar a la pantalla de inicio"** (Add to Home Screen) para utilizarla como una App Nativa (Web App Capable).
-
-## 📂 Respaldo de Datos (Backup)
-
-Para mover tus evaluaciones de un dispositivo a otro (ej. del iPhone a tu PC de escritorio):
-
-1. Ve a la pestaña **Data** en la aplicación.
-2. Haz clic en **"Descargar Respaldo JSON"**. Esto generará y descargará un archivo `crust-crumb-backup-YYYY-MM-DD.json`.
-3. Envía ese archivo a tu otro dispositivo.
-4. En el nuevo dispositivo, ve a la pestaña **Data**, haz clic en **"Restaurar"** y selecciona el archivo `.json`. La aplicación se sincronizará automáticamente.
-
-## 📄 Licencia
-
-Este proyecto es de uso personal y editorial para la catalogación gastronómica. El código fuente está abierto para inspección y uso académico/portafolio.
+Diseño, Desarrollo y Auditoría: Jacob Sánchez.An Independent Ranking.
